@@ -24,3 +24,18 @@ export function slugify(text: string): string {
     .replace(/^-+/, "")
     .replace(/-+$/, "");
 }
+
+// Utility functions (place these in your lib/utils.ts)
+export function generateSlug(title: string): string {
+  return title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+}
+
+export function calculateReadTime(text: string): number {
+  const wordsPerMinute = 200;
+  const wordCount = text.trim().split(/\s+/).length;
+  return Math.ceil(wordCount / wordsPerMinute);
+}

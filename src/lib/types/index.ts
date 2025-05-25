@@ -12,7 +12,7 @@ export interface Project {
   imageUrl?: string;
 }
 
-export interface Blog {
+export interface IBlog {
   id: string;
   title: string;
   slug: string;
@@ -20,6 +20,7 @@ export interface Blog {
   content: string;
   date: string;
   readTime: number;
+  featuredImage?: string;
   tags?: string[];
 }
 

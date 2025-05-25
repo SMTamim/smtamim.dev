@@ -119,3 +119,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+[data-vaul-drawer][data-vaul-drawer-direction="bottom"]::after {
+  height: 0 !important;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #d1d5db;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: #4b5563;
+}
+
+.ProseMirror blockquote p {
+  margin: 0;
+}

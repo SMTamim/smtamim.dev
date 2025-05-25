@@ -1,11 +1,11 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Blog } from "@/lib/types";
+import { IBlog } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 interface BlogCardProps {
-    blog: Blog;
+    blog: IBlog;
 }
 
 export default function BlogCard({ blog }: BlogCardProps) {
