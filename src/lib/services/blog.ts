@@ -7,6 +7,7 @@ import { revalidateTag } from "next/cache";
 import { prisma } from "@/utils/prisma";
 import { blogSchema } from "@/lib/schemas/blog.schema";
 import { BlogUpdateInputSchema } from "../../../generated/zod";
+import { BlogStatus } from "../../../generated/prisma";
 
 export const createBlog = async (blog: TBlog) => {
   const session = await auth();
@@ -51,6 +52,42 @@ export const updateBlog = async (blog: TBlog) => {
 
   revalidateTag("blogs");
   return { success: true, blog: newBlog };
+};
+
+export const deleteBlog = async (blogId: string) => {
+  const session = await auth();
+  console.log({ blogRoute: "blogRoute", session });
+  if (!session || !session.user?.id) {
+    throw new Error("Unauthorized");
+  }
+  const blog = await prisma.blog.update({
+    where: {
+      blogId
+    },
+    data: {
+      deletedAt: new Date()
+    }
+  });
+  revalidateTag("blogs");
+  return { success: true, blog };
+};
+
+export const updateBlogStatus = async (blogId: string, status: BlogStatus) => {
+  const session = await auth();
+  console.log({ blogRoute: "blogRoute", session });
+  if (!session || !session.user?.id) {
+    throw new Error("Unauthorized");
+  }
+  const blog = await prisma.blog.update({
+    where: {
+      blogId
+    },
+    data: {
+      status
+    }
+  });
+  revalidateTag("blogs");
+  return { success: true, blog };
 };
 
 export const getAllBlogs = async () => {
