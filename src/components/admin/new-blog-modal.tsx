@@ -18,11 +18,23 @@ import ImageDropzone from '../shared/image-dropzone';
 import { TagsInput } from '../shared/tags-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogSchema } from '@/lib/schemas/blog.schema';
-import { createBlog } from '@/lib/services/blog';
+import { createBlog, getSingleBlog, updateBlog } from '@/lib/services/blog';
+import { toast } from 'sonner';
+import { useEffect, useState } from 'react';
 
-export default function PostNewBlog() {
 
-    const { control, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<TBlog>({
+interface IPostNewBlogProps {
+    fetchBlogs: () => void,
+    onClose: () => void;
+    blogId?: string,
+}
+
+
+export default function PostNewBlog({ fetchBlogs, blogId, onClose }: IPostNewBlogProps) {
+
+    const [open, setOpen] = useState(false);
+
+    const { control, handleSubmit, formState: { errors, isValid, isSubmitting }, reset } = useForm<TBlog>({
         resolver: zodResolver(blogSchema),
         defaultValues: {
             blogId: "",
@@ -30,51 +42,91 @@ export default function PostNewBlog() {
             slug: "",
             excerpt: "",
             content: "",
-            date: "",
+            createdAt: "",
             readTime: 0,
             featuredImage: "",
             tags: [],
         }
     });
-    console.log(errors);
 
-    const onSubmit: SubmitHandler<TBlog> = async (data) => {
-        if (data.featuredImage instanceof File) {
-            const formData = new FormData();
-            formData.append("file", data.featuredImage);
-
-            const res = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
-
-            const json = await res.json();
-            console.log({ json });
-            data.featuredImage = json.url;
+    useEffect(() => {
+        if (!blogId) {
+            reset();
+            setOpen(false);
+            return;
         }
 
-        console.log("Final blog data:", data);
-        const res = await createBlog(data);
-        console.log({ res });
+        const fetchBlogDetails = async () => {
+            const toastId = toast.loading("Fetching blog details...");
+            try {
+                const blog = await getSingleBlog({ params: { blogId } });
+                if (blog) {
+                    reset(blog);
+                    setOpen(true);
+                }
+            } catch (err) {
+                console.error("Blog fetching error:", err);
+            } finally {
+                toast.dismiss(toastId);
+            }
+        };
+
+        fetchBlogDetails();
+    }, [blogId, reset]);
+
+    const onSubmit: SubmitHandler<TBlog> = async (data) => {
+        const toastId = toast.loading(blogId ? "Updating blog..." : "Creating blog...");
+        try {
+            if (data.featuredImage instanceof File) {
+                const formData = new FormData();
+                formData.append("file", data.featuredImage);
+
+                const res = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const json = await res.json();
+                console.log({ json });
+                data.featuredImage = json.url;
+            }
+
+            console.log("Final blog data:", data);
+            const res = blogId ? await updateBlog(data) : await createBlog(data);
+            if (res.success) {
+                toast.success(blogId ? "Blog updated successfully" : "Blog created successfully", { id: toastId });
+                fetchBlogs();
+                setOpen(false);
+                reset();
+                onClose?.();
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                toast.error(err.message || blogId ? "Blog update failed!" : "Blog creation failed!", { id: toastId });
+            }
+        }
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={(isOpen) => {
+            setOpen(isOpen);
+            if (!isOpen) onClose?.();
+        }}>
             <DialogTrigger asChild>
-                <Button variant="outline">Post New Blog</Button>
+                <Button variant="outline">{blogId ? "Update Blog" : `Post New Blog`}</Button>
             </DialogTrigger>
             <DialogContent className="max-w-none w-full sm:max-w-[90%] md:max-w-3xl lg:max-w-2xl p-4 sm:p-6 max-h-[90vh] overflow-y-auto rounded-xl shadow-lg">
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogHeader>
-                        <DialogTitle>Post New Blog</DialogTitle>
+                        <DialogTitle>{blogId ? "Update Blog" : `Post New Blog`}</DialogTitle>
                         <DialogDescription>
                             Please enter the blog details here:
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                         <div>
-                            <Label htmlFor="title" className="text-right">
+                            <Label htmlFor="title" className="mb-2">
                                 Title
                             </Label>
                             <div className="items-center gap-4">
@@ -95,7 +147,7 @@ export default function PostNewBlog() {
                         </div>
 
                         <div>
-                            <Label htmlFor="slug" className="text-right">
+                            <Label htmlFor="slug" className="mb-2">
                                 Slug
                             </Label>
                             <div className="items-center gap-4">
@@ -130,7 +182,7 @@ export default function PostNewBlog() {
                         </div>
 
                         <div>
-                            <Label htmlFor="featuredImage" className="text-right">
+                            <Label htmlFor="featuredImage" className="mb-2">
                                 Featured Image
                             </Label>
                             <div className="items-center gap-4">
@@ -148,7 +200,7 @@ export default function PostNewBlog() {
                         </div>
 
                         <div>
-                            <Label htmlFor="content" className="text-right">
+                            <Label htmlFor="content" className="mb-2">
                                 Content
                             </Label>
                             <div className="items-center gap-4">
@@ -164,6 +216,24 @@ export default function PostNewBlog() {
                                 />
                                 {errors.content && (
                                     <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <Label htmlFor="readTime" className="mb-2">
+                                Read time
+                            </Label>
+                            <div className="items-center gap-4">
+                                <Controller
+                                    name="readTime"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Input value={field.value!} onChange={field.onChange} />
+                                    )}
+                                />
+                                {errors.readTime && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.readTime.message}</p>
                                 )}
                             </div>
                         </div>

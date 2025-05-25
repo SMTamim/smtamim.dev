@@ -22,7 +22,7 @@ function getSafeFileName(originalName: string): string {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  console.log({ session });
+  console.log({ uploadRoute: "uploadRoute", session });
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }

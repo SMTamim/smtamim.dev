@@ -1,12 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/utils/auth";
+import { NextResponse } from "next/server";
+import { prisma } from "@/utils/prisma";
 
-export async function POST(req: NextRequest) {
-  const session = await auth();
-  console.log({ session });
-  if (!session) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-  }
-  const body = await req.json();
-  return NextResponse.json({ success: true, body });
+// getting blogs
+export async function GET() {
+  const blogs = await prisma.blog.findMany();
+  return NextResponse.json({ success: true, blogs });
 }

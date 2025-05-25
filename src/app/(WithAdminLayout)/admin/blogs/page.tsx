@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { blogs } from "@/lib/constants/blogs"
+// import { blogs } from "@/lib/constants/blogs"
 import {
     Table,
     TableBody,
@@ -14,23 +14,61 @@ import {
 import { Badge } from "@/components/ui/badge"
 import PostNewBlog from "@/components/admin/new-blog-modal"
 import { TableSkeleton } from "@/components/shared/table-skeleton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { formatDate } from 'date-fns';
 import { NoDataFound } from "@/components/shared/no-data-found";
+import { TBlog } from "@/lib/types";
+import { getAllBlogs } from "@/lib/services/blog";
 
 export default function BlogsPage() {
 
+    const [blogs, setBlogs] = useState<TBlog[]>([]);
     const [isTableLoading, setIsTableLoading] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedBlog, setSelectedBlog] = useState<string | undefined>(undefined);
 
-    setTimeout(() => { setIsTableLoading(false) }, 500);
+    const fetchBlogs = async () => {
+        try {
+            setIsTableLoading(true);
+            const blogs = await getAllBlogs();
+            setBlogs(blogs);
+            console.log(blogs);
+        } catch (err) {
+            console.log(err);
+        }
+        finally {
+            setIsTableLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+
+
+    const handleEditClick = (blogId: string) => {
+        setSelectedBlog(blogId);
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+        setSelectedBlog(undefined);
+    };
+
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold">Blog Posts</h1>
                 <div>
-
-                    <PostNewBlog />
+                    {modalOpen && (
+                        <PostNewBlog
+                            blogId={selectedBlog}
+                            onClose={handleModalClose}
+                            fetchBlogs={fetchBlogs}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -53,13 +91,15 @@ export default function BlogsPage() {
                                 <TableSkeleton cols={6} />
                             ) : blogs.length ? (
                                 blogs.map((blog) => (
-                                    <TableRow key={blog.id}>
+                                    <TableRow key={blog.blogId}>
                                         <TableCell className="max-w-[300px] truncate">
                                             {blog.title}
                                         </TableCell>
-                                        <TableCell>Published</TableCell>
                                         <TableCell>
-                                            <Badge variant="outline">{formatDate(blog.date, "dd-MMM-yy hh:mm")}</Badge>
+                                            <Badge variant="outline">{blog.status}</Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant="outline">{formatDate(blog.createdAt!, "dd-MMM-yy hh:mm")}</Badge>
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex gap-1">
@@ -71,8 +111,8 @@ export default function BlogsPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="flex justify-end gap-2">
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link href={`/admin/blogs/${blog.id}`}>Edit</Link>
+                                            <Button variant="outline" size="sm" onClick={() => handleEditClick(blog.blogId!)}>
+                                                Edit
                                             </Button>
                                             <Button variant="destructive" size="sm">
                                                 Delete

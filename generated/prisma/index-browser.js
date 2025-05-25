@@ -168,6 +168,22 @@ exports.Prisma.AuthenticatorScalarFieldEnum = {
   transports: 'transports'
 };
 
+exports.Prisma.BlogScalarFieldEnum = {
+  blogId: 'blogId',
+  authorId: 'authorId',
+  title: 'title',
+  slug: 'slug',
+  content: 'content',
+  readTime: 'readTime',
+  visitCounter: 'visitCounter',
+  featuredImage: 'featuredImage',
+  tags: 'tags',
+  status: 'status',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -182,14 +198,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.BlogStatus = exports.$Enums.BlogStatus = {
+  PUBLISHED: 'PUBLISHED',
+  PENDING: 'PENDING',
+  UNPUBLISHED: 'UNPUBLISHED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  Authenticator: 'Authenticator'
+  Authenticator: 'Authenticator',
+  Blog: 'Blog'
 };
 
 /**

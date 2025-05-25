@@ -9,6 +9,11 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "../generated/zod"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DB_CONNECTION_STRING")
@@ -24,6 +29,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+  blogs         Blog[]
 
   @@map("users")
 }
@@ -81,4 +87,31 @@ model Authenticator {
 
   @@id([userId, credentialID])
   @@map("authenticator")
+}
+
+enum BlogStatus {
+  PUBLISHED
+  PENDING
+  UNPUBLISHED
+}
+
+model Blog {
+  blogId        String     @id @default(cuid()) @map("b_id")
+  authorId      String     @map("author_id")
+  title         String
+  slug          String     @unique
+  content       String
+  readTime      Int        @map("read_time")
+  visitCounter  Int        @default(0) @map("visit_counter")
+  featuredImage String     @map("featured_image")
+  tags          String[]
+  status        BlogStatus @default(PENDING)
+  deletedAt     DateTime?
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  // relations
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("blogs")
 }
