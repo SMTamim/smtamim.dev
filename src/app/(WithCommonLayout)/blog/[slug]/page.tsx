@@ -1,6 +1,6 @@
 "use client";
 
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -8,14 +8,10 @@ import { formatDate } from "@/lib/utils";
 import { blogs } from "@/lib/constants/blogs";
 import { motion, fadeIn } from "@/components/shared/framer-motion";
 
-interface BlogPageProps {
-    params: {
-        slug: string;
-    };
-}
 
-export default function BlogPage({ params }: BlogPageProps) {
-    const blog = blogs.find((b) => b.slug === params.slug);
+export default function SingleBlogPage() {
+    const { slug } = useParams();
+    const blog = blogs.find((b) => b.slug === slug);
 
     if (!blog) {
         notFound();

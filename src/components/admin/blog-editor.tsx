@@ -139,6 +139,7 @@ export default function RichTextEditor({
 
     // Add image upload function to editor for use in MenuBar
     if (editor) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (editor as any).uploadImage = openImageDialog
     }
 

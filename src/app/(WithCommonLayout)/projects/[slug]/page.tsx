@@ -1,18 +1,14 @@
+"use client";
 
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { projects } from "@/lib/constants/projects";
 
-interface ProjectPageProps {
-    params: {
-        slug: string;
-    };
-}
-
-export default function ProjectPage({ params }: ProjectPageProps) {
-    const project = projects.find((p) => p.slug === params.slug);
+export default function ProjectPage() {
+    const { slug } = useParams();
+    const project = projects.find((b) => b.slug === slug);
 
     if (!project) {
         notFound();

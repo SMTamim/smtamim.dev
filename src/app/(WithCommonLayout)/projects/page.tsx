@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { DataTable } from "@/components/admin/data-table";
-import { columns } from "./columns";
-import { projects } from "@/lib/constants/projects";
+// import { projects } from "@/lib/constants/projects";
 
 export default function AdminProjectsPage() {
     return (
@@ -17,8 +15,6 @@ export default function AdminProjectsPage() {
                     </Link>
                 </Button>
             </div>
-
-            <DataTable columns={columns} data={projects} />
         </div>
     );
 }
