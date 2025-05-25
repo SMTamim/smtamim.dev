@@ -1,6 +1,6 @@
-import { IBlog } from "@/lib/types";
+import { TBlog } from "@/lib/types";
 
-export const blogs: IBlog[] = [
+export const blogs: TBlog[] = [
   {
     id: "1",
     title: "Getting Started with Next.js 14",

@@ -98,7 +98,7 @@ export default function RichTextEditor({
         },
     });
 
-    const handleImageUpload = useCallback((file: File) => {
+    const handleImageUpload = useCallback(async (file: File) => {
         if (!editor) return
 
         // Validate file type
@@ -112,16 +112,28 @@ export default function RichTextEditor({
             alert('Image size should be less than 5MB')
             return
         }
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
 
-        const reader = new FileReader()
-        reader.onload = (e) => {
-            const src = e.target?.result as string
-            if (src) {
-                // Insert image at current cursor position
-                editor.chain().focus().setImage({ src }).run()
+            if (!res.ok) {
+                throw new Error("Image upload failed");
             }
+
+            const json = await res.json();
+            const imageUrl = json.url;
+            console.log({ imageUrl });
+
+            // Insert image into the editor
+            editor.chain().focus().setImage({ src: imageUrl }).run();
+        } catch (error) {
+            console.error("Upload error:", error);
+            alert("Image upload failed. Please try again.");
         }
-        reader.readAsDataURL(file)
     }, [editor])
 
     const openImageDialog = useCallback(() => {

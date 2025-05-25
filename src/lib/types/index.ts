@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { blogSchema } from "../schemas/blog.schema";
+
 export interface Project {
   id: string;
   title: string;
@@ -12,17 +15,7 @@ export interface Project {
   imageUrl?: string;
 }
 
-export interface IBlog {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  date: string;
-  readTime: number;
-  featuredImage?: string;
-  tags?: string[];
-}
+export type TBlog = z.infer<typeof blogSchema>;
 
 export interface Experience {
   id: string;
