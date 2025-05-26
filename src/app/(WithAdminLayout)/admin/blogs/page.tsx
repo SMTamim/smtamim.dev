@@ -146,6 +146,7 @@ export default function BlogsPage() {
                             fetchBlogs={fetchBlogs}
                         />
                     )}
+                    {!modalOpen && <PostNewBlog fetchBlogs={fetchBlogs} />}
                 </div>
             </div>
 
@@ -188,7 +189,7 @@ export default function BlogsPage() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="flex justify-end gap-2">
-                                            <Button variant="outline" size="sm" onClick={() => handleEditClick(blog.blogId!)}>
+                                            <Button variant="outline" size="sm" onClick={() => handleEditClick(blog.slug!)}>
                                                 Edit
                                             </Button>
                                             <ConfirmModal

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TBlog } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BlogCardProps {
     blog: TBlog;
@@ -14,7 +15,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
             <CardHeader>
                 <h3 className="text-xl font-semibold">{blog.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                    {formatDate(blog.date)} • {blog.readTime} min read
+                    {formatDate(blog.createdAt!)} • {blog.readTime} min read
                 </p>
             </CardHeader>
             <CardContent className="flex-1">
@@ -24,6 +25,23 @@ export default function BlogCard({ blog }: BlogCardProps) {
                 <Button asChild variant="ghost" className="w-full">
                     <Link href={`/blog/${blog.slug}`}>Read More</Link>
                 </Button>
+            </CardFooter>
+        </Card>
+    );
+}
+
+export function BlogCardSkeleton() {
+    return (
+        <Card className="h-full flex flex-col">
+            <CardHeader className="space-y-2">
+                <Skeleton className="w-3/4 h-6 rounded-md" />
+                <Skeleton className="w-1/2 h-4 rounded-md" />
+            </CardHeader>
+            <CardContent className="flex-1">
+                <Skeleton className="w-full h-16 rounded-md" />
+            </CardContent>
+            <CardFooter>
+                <Skeleton className="w-full h-10 rounded-md" />
             </CardFooter>
         </Card>
     );

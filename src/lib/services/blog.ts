@@ -103,9 +103,13 @@ export const getAllBlogs = async () => {
   return [] as TBlog[];
 };
 
-export const getSingleBlog = async ({ params }: { params: { blogId: string } }) => {
-  console.log(`${config.api_url}/blogs/${params.blogId}`);
-  const res = await fetch(`${config.api_url}/blogs/${params.blogId}`, {
+export const getSingleBlog = async ({ params }: { params: { blogId?: string; slug?: string } }) => {
+  let url = `${config.api_url}/blogs/${params.blogId}`;
+  if (params.slug) {
+    url = `${config.api_url}/blogs/${params.slug}`;
+  }
+  console.log(url);
+  const res = await fetch(url, {
     next: {
       tags: ["blogs"]
     }

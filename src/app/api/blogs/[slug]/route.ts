@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
 // getting blogs
-export async function GET(req: NextRequest, { params }: { params: { blogId: string } }) {
-  const blogId = params.blogId;
+export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
+  const slug = params.slug;
   const blog = await prisma.blog.findUnique({
     where: {
-      blogId
+      slug
     }
   });
   console.log({ blog });

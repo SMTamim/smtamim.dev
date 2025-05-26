@@ -1,11 +1,35 @@
 "use client";
 
-import BlogCard from "@/components/home/blog-card";
+import BlogCard, { BlogCardSkeleton } from "@/components/home/blog-card";
 import { Button } from "@/components/ui/button";
-import { blogs } from "@/lib/constants/blogs";
 import { motion, fadeIn, staggerContainer } from "@/components/shared/framer-motion";
+import { useEffect, useState } from "react";
+import { TBlog } from "@/lib/types";
+import { getAllBlogs } from "@/lib/services/blog";
 
 export default function BlogPage() {
+
+    const [blogs, setBlogs] = useState<TBlog[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchBlogs = async () => {
+        try {
+            setIsLoading(true);
+            const blogs = await getAllBlogs();
+            setBlogs(blogs);
+            console.log(blogs);
+        } catch (err) {
+            console.log(err);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+
     return (
         <motion.section
             initial="hidden"
@@ -21,14 +45,24 @@ export default function BlogPage() {
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogs.map((blog, index) => (
-                    <motion.div
-                        key={blog.id}
-                        variants={fadeIn("up", 0.2 + index * 0.1)}
-                    >
-                        <BlogCard blog={blog} />
-                    </motion.div>
-                ))}
+
+                {isLoading ? (
+                    Array(3).fill(0).map((_, index) => (
+                        <motion.div key={index} variants={fadeIn("up", 0.2 + index * 0.1)}>
+                            <BlogCardSkeleton key={index} />
+                        </motion.div>
+                    ))
+                )
+                    :
+                    blogs.map((blog, index) => (
+                        <motion.div
+                            key={blog.blogId}
+                            variants={fadeIn("up", 0.2 + index * 0.1)}
+                        >
+                            <BlogCard blog={blog} />
+                        </motion.div>
+                    ))
+                }
             </div>
 
             <motion.div

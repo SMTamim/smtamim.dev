@@ -25,7 +25,7 @@ import { useEffect, useState } from 'react';
 
 interface IPostNewBlogProps {
     fetchBlogs: () => void,
-    onClose: () => void;
+    onClose?: () => void;
     blogId?: string,
 }
 

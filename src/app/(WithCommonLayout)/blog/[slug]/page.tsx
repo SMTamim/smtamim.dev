@@ -5,16 +5,44 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { blogs } from "@/lib/constants/blogs";
 import { motion, fadeIn } from "@/components/shared/framer-motion";
+import { useEffect, useState } from "react";
+import { getSingleBlog } from "@/lib/services/blog";
+import { TBlog } from "@/lib/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 export default function SingleBlogPage() {
     const { slug } = useParams();
-    const blog = blogs.find((b) => b.slug === slug);
+    const [blog, setBlog] = useState<TBlog | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        const fetchBlogDetails = async () => {
+            setIsLoading(true);
+            try {
+                if (slug) {
+                    const blog = await getSingleBlog({ params: { slug: slug.toString() } });
+                    console.log(blog);
+                    setBlog(blog);
+                }
+            } catch (err) {
+                console.error("Blog fetching error:", err);
+            }
+            finally {
+                setIsLoading(false);
+            }
+        };
 
+        fetchBlogDetails();
+    }, [slug]);
+
+    if (isLoading) {
+        return (
+            <BlogDetailSkeleton />
+        )
+    }
     if (!blog) {
-        notFound();
+        return notFound();
     }
 
     return (
@@ -34,7 +62,7 @@ export default function SingleBlogPage() {
             <article className="max-w-3xl mx-auto">
                 <div className="mb-8">
                     <span className="text-sm text-muted-foreground">
-                        {formatDate(blog.date)} • {blog.readTime} min read
+                        {formatDate(blog.createdAt!)} • {blog.readTime} min read
                     </span>
                     {blog.tags && (
                         <div className="flex flex-wrap gap-2 mt-2">
@@ -68,5 +96,36 @@ export default function SingleBlogPage() {
                 />
             </article>
         </motion.div>
+    );
+}
+
+function BlogDetailSkeleton() {
+    return (
+        <div className="container mx-auto px-4 py-12 animate-pulse">
+            <div className="mb-8">
+                <Skeleton className="w-32 h-10 rounded-md inline-flex items-center" />
+            </div>
+
+            <article className="max-w-3xl mx-auto">
+                <div className="mb-8 space-y-2">
+                    <Skeleton className="w-40 h-4" /> {/* Date + read time */}
+                    <div className="flex gap-2">
+                        {[...Array(3)].map((_, i) => (
+                            <Skeleton key={i} className="w-14 h-6 rounded" />
+                        ))}
+                    </div>
+                </div>
+
+                <Skeleton className="w-3/4 h-10 mb-6" /> {/* Title */}
+
+                <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                        <Skeleton key={i} className="w-full h-4 rounded" />
+                    ))}
+                    <Skeleton className="w-5/6 h-4 rounded" />
+                    <Skeleton className="w-2/3 h-4 rounded" />
+                </div>
+            </article>
+        </div>
     );
 }
