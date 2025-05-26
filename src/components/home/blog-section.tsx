@@ -3,7 +3,7 @@ import BlogCard, { BlogCardSkeleton } from "@/components/home/blog-card";
 
 import { motion, fadeIn, staggerContainer } from "@/components/shared/framer-motion";
 import { Button } from "@/components/ui/button";
-import { getAllBlogs } from "@/lib/services/blog";
+import { getAllBlogs } from "@/lib/services/blog.actions";
 import { TBlog } from "@/lib/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";

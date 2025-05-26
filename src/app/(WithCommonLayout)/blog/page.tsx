@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { motion, fadeIn, staggerContainer } from "@/components/shared/framer-motion";
 import { useEffect, useState } from "react";
 import { TBlog } from "@/lib/types";
-import { getAllBlogs } from "@/lib/services/blog";
+import { getAllBlogs } from "@/lib/services/blog.actions";
 
 export default function BlogPage() {
 

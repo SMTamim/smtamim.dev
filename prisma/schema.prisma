@@ -144,3 +144,37 @@ enum ProjectStatus {
   ONGOING
   COMPLETE
 }
+
+model SkillCategory {
+  sCatId    String    @unique @default(cuid()) @map("s_cat_id")
+  name      String
+  icon      String
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  // relations
+  skills    Skill[]
+
+  @@map("skill_category")
+}
+
+model Skill {
+  sId           String         @unique @default(cuid()) @map("s_id")
+  sCategoryId   String         @map("s_category_id")
+  name          String
+  proficiency   Int
+  icon          String
+  type          SkillType      @default(TECHNICAL_SKILL)
+  deletedAt     DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  // relations
+  skillCategory SkillCategory? @relation(fields: [sCategoryId], references: [sCatId])
+
+  @@map("skill")
+}
+
+enum SkillType {
+  TECHNICAL_SKILL
+  SOFT_SKILL
+}

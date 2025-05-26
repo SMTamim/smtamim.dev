@@ -5,7 +5,7 @@ import ProjectCard from "@/components/home/project-card";
 import { motion, fadeIn, staggerContainer } from "@/components/shared/framer-motion";
 import { useEffect, useState } from "react";
 import { Project } from "../../../generated/zod";
-import { getAllProjects } from "@/lib/services/project";
+import { getAllProjects } from "@/lib/services/project.actions";
 import { toast } from "sonner";
 import ProjectCardSkeleton from "./project-card-loader";
 

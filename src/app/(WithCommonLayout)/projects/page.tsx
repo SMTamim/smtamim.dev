@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Project } from "../../../../generated/zod";
 import { useEffect, useState } from "react";
-import { getAllProjects } from "@/lib/services/project";
+import { getAllProjects } from "@/lib/services/project.actions";
 import { toast } from "sonner";
 import ProjectCardSkeleton from "@/components/home/project-card-loader";
 

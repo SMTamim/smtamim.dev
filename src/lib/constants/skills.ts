@@ -2,19 +2,19 @@ export const skills = {
   categories: [
     {
       name: "Frontend Development",
-      icon: "/icons/frontend.svg"
+      icon: "/icons/frontend-dev.webp"
     },
     {
       name: "Backend Development",
-      icon: "/icons/backend.svg"
+      icon: "/icons/backend.webp"
     },
     {
       name: "DevOps & Cloud",
-      icon: "/icons/cloud.svg"
+      icon: "/icons/cloud-and-devops.svg"
     },
     {
       name: "Soft Skills",
-      icon: "/icons/soft-skills.svg"
+      icon: "/icons/soft-skills.webp"
     }
   ],
   technical: [
@@ -73,8 +73,14 @@ export const skills = {
       proficiency: 70
     },
     {
-      name: "HTML/CSS",
-      icon: "/icons/html-css.svg",
+      name: "HTML",
+      icon: "/icons/html.svg",
+      category: "Frontend Development",
+      proficiency: 95
+    },
+    {
+      name: "CSS",
+      icon: "/icons/css.svg",
       category: "Frontend Development",
       proficiency: 95
     },

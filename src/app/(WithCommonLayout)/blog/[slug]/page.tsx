@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { motion, fadeIn } from "@/components/shared/framer-motion";
 import { useEffect, useState } from "react";
-import { getSingleBlog } from "@/lib/services/blog";
+import { getSingleBlog } from "@/lib/services/blog.actions";
 import { TBlog } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 

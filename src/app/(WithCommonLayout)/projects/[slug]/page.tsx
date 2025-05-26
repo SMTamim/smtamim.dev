@@ -8,7 +8,7 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { Project } from "../../../../../generated/zod";
 import { useEffect, useState } from "react";
-import { getSingleProject } from "@/lib/services/project";
+import { getSingleProject } from "@/lib/services/project.actions";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProjectShowcase() {

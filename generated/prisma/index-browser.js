@@ -205,6 +205,27 @@ exports.Prisma.ProjectScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SkillCategoryScalarFieldEnum = {
+  sCatId: 'sCatId',
+  name: 'name',
+  icon: 'icon',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SkillScalarFieldEnum = {
+  sId: 'sId',
+  sCategoryId: 'sCategoryId',
+  name: 'name',
+  proficiency: 'proficiency',
+  icon: 'icon',
+  type: 'type',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -231,6 +252,11 @@ exports.ProjectStatus = exports.$Enums.ProjectStatus = {
   COMPLETE: 'COMPLETE'
 };
 
+exports.SkillType = exports.$Enums.SkillType = {
+  TECHNICAL_SKILL: 'TECHNICAL_SKILL',
+  SOFT_SKILL: 'SOFT_SKILL'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
@@ -238,7 +264,9 @@ exports.Prisma.ModelName = {
   VerificationToken: 'VerificationToken',
   Authenticator: 'Authenticator',
   Blog: 'Blog',
-  Project: 'Project'
+  Project: 'Project',
+  SkillCategory: 'SkillCategory',
+  Skill: 'Skill'
 };
 
 /**

@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Project, ProjectStatusSchema } from "../../../../../generated/zod";
 import { ProjectStatus } from "../../../../../generated/prisma";
-import { deleteProject, getAllProjects, updateProjectStatus } from "@/lib/services/project";
+import { deleteProject, getAllProjects, updateProjectStatus } from "@/lib/services/project.actions";
 import { TableSkeleton } from "@/components/shared/table-skeleton";
 import { NoDataFound } from "@/components/shared/no-data-found";
 import ConfirmModal from "@/components/shared/confirm-modal";

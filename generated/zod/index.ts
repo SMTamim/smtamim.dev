@@ -26,6 +26,10 @@ export const BlogScalarFieldEnumSchema = z.enum(['blogId','authorId','title','sl
 
 export const ProjectScalarFieldEnumSchema = z.enum(['pId','title','slug','shortDescription','fullDescription','images','technologies','features','challenges','status','frontendDemoUrl','backendDemoUrl','frontendGitUrl','backendGitUrl','isFeatured','deletedAt','createdAt','updatedAt']);
 
+export const SkillCategoryScalarFieldEnumSchema = z.enum(['sCatId','name','icon','deletedAt','createdAt','updatedAt']);
+
+export const SkillScalarFieldEnumSchema = z.enum(['sId','sCategoryId','name','proficiency','icon','type','deletedAt','createdAt','updatedAt']);
+
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
@@ -39,6 +43,10 @@ export type BlogStatusType = `${z.infer<typeof BlogStatusSchema>}`
 export const ProjectStatusSchema = z.enum(['PLANNING','ONGOING','COMPLETE']);
 
 export type ProjectStatusType = `${z.infer<typeof ProjectStatusSchema>}`
+
+export const SkillTypeSchema = z.enum(['TECHNICAL_SKILL','SOFT_SKILL']);
+
+export type SkillTypeType = `${z.infer<typeof SkillTypeSchema>}`
 
 /////////////////////////////////////////
 // MODELS
@@ -170,6 +178,39 @@ export const ProjectSchema = z.object({
 })
 
 export type Project = z.infer<typeof ProjectSchema>
+
+/////////////////////////////////////////
+// SKILL CATEGORY SCHEMA
+/////////////////////////////////////////
+
+export const SkillCategorySchema = z.object({
+  sCatId: z.string().cuid(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type SkillCategory = z.infer<typeof SkillCategorySchema>
+
+/////////////////////////////////////////
+// SKILL SCHEMA
+/////////////////////////////////////////
+
+export const SkillSchema = z.object({
+  type: SkillTypeSchema,
+  sId: z.string().cuid(),
+  sCategoryId: z.string(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type Skill = z.infer<typeof SkillSchema>
 
 /////////////////////////////////////////
 // SELECT & INCLUDE
@@ -348,6 +389,63 @@ export const ProjectSelectSchema: z.ZodType<Prisma.ProjectSelect> = z.object({
   deletedAt: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+}).strict()
+
+// SKILL CATEGORY
+//------------------------------------------------------
+
+export const SkillCategoryIncludeSchema: z.ZodType<Prisma.SkillCategoryInclude> = z.object({
+  skills: z.union([z.boolean(),z.lazy(() => SkillFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => SkillCategoryCountOutputTypeArgsSchema)]).optional(),
+}).strict()
+
+export const SkillCategoryArgsSchema: z.ZodType<Prisma.SkillCategoryDefaultArgs> = z.object({
+  select: z.lazy(() => SkillCategorySelectSchema).optional(),
+  include: z.lazy(() => SkillCategoryIncludeSchema).optional(),
+}).strict();
+
+export const SkillCategoryCountOutputTypeArgsSchema: z.ZodType<Prisma.SkillCategoryCountOutputTypeDefaultArgs> = z.object({
+  select: z.lazy(() => SkillCategoryCountOutputTypeSelectSchema).nullish(),
+}).strict();
+
+export const SkillCategoryCountOutputTypeSelectSchema: z.ZodType<Prisma.SkillCategoryCountOutputTypeSelect> = z.object({
+  skills: z.boolean().optional(),
+}).strict();
+
+export const SkillCategorySelectSchema: z.ZodType<Prisma.SkillCategorySelect> = z.object({
+  sCatId: z.boolean().optional(),
+  name: z.boolean().optional(),
+  icon: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  skills: z.union([z.boolean(),z.lazy(() => SkillFindManyArgsSchema)]).optional(),
+  _count: z.union([z.boolean(),z.lazy(() => SkillCategoryCountOutputTypeArgsSchema)]).optional(),
+}).strict()
+
+// SKILL
+//------------------------------------------------------
+
+export const SkillIncludeSchema: z.ZodType<Prisma.SkillInclude> = z.object({
+  skillCategory: z.union([z.boolean(),z.lazy(() => SkillCategoryArgsSchema)]).optional(),
+}).strict()
+
+export const SkillArgsSchema: z.ZodType<Prisma.SkillDefaultArgs> = z.object({
+  select: z.lazy(() => SkillSelectSchema).optional(),
+  include: z.lazy(() => SkillIncludeSchema).optional(),
+}).strict();
+
+export const SkillSelectSchema: z.ZodType<Prisma.SkillSelect> = z.object({
+  sId: z.boolean().optional(),
+  sCategoryId: z.boolean().optional(),
+  name: z.boolean().optional(),
+  proficiency: z.boolean().optional(),
+  icon: z.boolean().optional(),
+  type: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
+  skillCategory: z.union([z.boolean(),z.lazy(() => SkillCategoryArgsSchema)]).optional(),
 }).strict()
 
 
@@ -972,6 +1070,149 @@ export const ProjectScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Proje
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
+export const SkillCategoryWhereInputSchema: z.ZodType<Prisma.SkillCategoryWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => SkillCategoryWhereInputSchema),z.lazy(() => SkillCategoryWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillCategoryWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillCategoryWhereInputSchema),z.lazy(() => SkillCategoryWhereInputSchema).array() ]).optional(),
+  sCatId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  icon: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  skills: z.lazy(() => SkillListRelationFilterSchema).optional()
+}).strict();
+
+export const SkillCategoryOrderByWithRelationInputSchema: z.ZodType<Prisma.SkillCategoryOrderByWithRelationInput> = z.object({
+  sCatId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  skills: z.lazy(() => SkillOrderByRelationAggregateInputSchema).optional()
+}).strict();
+
+export const SkillCategoryWhereUniqueInputSchema: z.ZodType<Prisma.SkillCategoryWhereUniqueInput> = z.object({
+  sCatId: z.string().cuid()
+})
+.and(z.object({
+  sCatId: z.string().cuid().optional(),
+  AND: z.union([ z.lazy(() => SkillCategoryWhereInputSchema),z.lazy(() => SkillCategoryWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillCategoryWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillCategoryWhereInputSchema),z.lazy(() => SkillCategoryWhereInputSchema).array() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  icon: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  skills: z.lazy(() => SkillListRelationFilterSchema).optional()
+}).strict());
+
+export const SkillCategoryOrderByWithAggregationInputSchema: z.ZodType<Prisma.SkillCategoryOrderByWithAggregationInput> = z.object({
+  sCatId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => SkillCategoryCountOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => SkillCategoryMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => SkillCategoryMinOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const SkillCategoryScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.SkillCategoryScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => SkillCategoryScalarWhereWithAggregatesInputSchema),z.lazy(() => SkillCategoryScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillCategoryScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillCategoryScalarWhereWithAggregatesInputSchema),z.lazy(() => SkillCategoryScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  sCatId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  icon: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const SkillWhereInputSchema: z.ZodType<Prisma.SkillWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => SkillWhereInputSchema),z.lazy(() => SkillWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillWhereInputSchema),z.lazy(() => SkillWhereInputSchema).array() ]).optional(),
+  sId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  sCategoryId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  proficiency: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  icon: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => EnumSkillTypeFilterSchema),z.lazy(() => SkillTypeSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  skillCategory: z.union([ z.lazy(() => SkillCategoryNullableScalarRelationFilterSchema),z.lazy(() => SkillCategoryWhereInputSchema) ]).optional().nullable(),
+}).strict();
+
+export const SkillOrderByWithRelationInputSchema: z.ZodType<Prisma.SkillOrderByWithRelationInput> = z.object({
+  sId: z.lazy(() => SortOrderSchema).optional(),
+  sCategoryId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  proficiency: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  skillCategory: z.lazy(() => SkillCategoryOrderByWithRelationInputSchema).optional()
+}).strict();
+
+export const SkillWhereUniqueInputSchema: z.ZodType<Prisma.SkillWhereUniqueInput> = z.object({
+  sId: z.string().cuid()
+})
+.and(z.object({
+  sId: z.string().cuid().optional(),
+  AND: z.union([ z.lazy(() => SkillWhereInputSchema),z.lazy(() => SkillWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillWhereInputSchema),z.lazy(() => SkillWhereInputSchema).array() ]).optional(),
+  sCategoryId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  proficiency: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
+  icon: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => EnumSkillTypeFilterSchema),z.lazy(() => SkillTypeSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  skillCategory: z.union([ z.lazy(() => SkillCategoryNullableScalarRelationFilterSchema),z.lazy(() => SkillCategoryWhereInputSchema) ]).optional().nullable(),
+}).strict());
+
+export const SkillOrderByWithAggregationInputSchema: z.ZodType<Prisma.SkillOrderByWithAggregationInput> = z.object({
+  sId: z.lazy(() => SortOrderSchema).optional(),
+  sCategoryId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  proficiency: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => SkillCountOrderByAggregateInputSchema).optional(),
+  _avg: z.lazy(() => SkillAvgOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => SkillMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => SkillMinOrderByAggregateInputSchema).optional(),
+  _sum: z.lazy(() => SkillSumOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const SkillScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.SkillScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => SkillScalarWhereWithAggregatesInputSchema),z.lazy(() => SkillScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillScalarWhereWithAggregatesInputSchema),z.lazy(() => SkillScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  sId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  sCategoryId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  proficiency: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
+  icon: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => EnumSkillTypeWithAggregatesFilterSchema),z.lazy(() => SkillTypeSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
 export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().optional().nullable(),
@@ -1579,6 +1820,156 @@ export const ProjectUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ProjectUnch
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
+export const SkillCategoryCreateInputSchema: z.ZodType<Prisma.SkillCategoryCreateInput> = z.object({
+  sCatId: z.string().cuid().optional(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional(),
+  skills: z.lazy(() => SkillCreateNestedManyWithoutSkillCategoryInputSchema).optional()
+}).strict();
+
+export const SkillCategoryUncheckedCreateInputSchema: z.ZodType<Prisma.SkillCategoryUncheckedCreateInput> = z.object({
+  sCatId: z.string().cuid().optional(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional(),
+  skills: z.lazy(() => SkillUncheckedCreateNestedManyWithoutSkillCategoryInputSchema).optional()
+}).strict();
+
+export const SkillCategoryUpdateInputSchema: z.ZodType<Prisma.SkillCategoryUpdateInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  skills: z.lazy(() => SkillUpdateManyWithoutSkillCategoryNestedInputSchema).optional()
+}).strict();
+
+export const SkillCategoryUncheckedUpdateInputSchema: z.ZodType<Prisma.SkillCategoryUncheckedUpdateInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  skills: z.lazy(() => SkillUncheckedUpdateManyWithoutSkillCategoryNestedInputSchema).optional()
+}).strict();
+
+export const SkillCategoryCreateManyInputSchema: z.ZodType<Prisma.SkillCategoryCreateManyInput> = z.object({
+  sCatId: z.string().cuid().optional(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillCategoryUpdateManyMutationInputSchema: z.ZodType<Prisma.SkillCategoryUpdateManyMutationInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillCategoryUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SkillCategoryUncheckedUpdateManyInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillCreateInputSchema: z.ZodType<Prisma.SkillCreateInput> = z.object({
+  sId: z.string().cuid().optional(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional(),
+  skillCategory: z.lazy(() => SkillCategoryCreateNestedOneWithoutSkillsInputSchema).optional()
+}).strict();
+
+export const SkillUncheckedCreateInputSchema: z.ZodType<Prisma.SkillUncheckedCreateInput> = z.object({
+  sId: z.string().cuid().optional(),
+  sCategoryId: z.string(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillUpdateInputSchema: z.ZodType<Prisma.SkillUpdateInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  skillCategory: z.lazy(() => SkillCategoryUpdateOneWithoutSkillsNestedInputSchema).optional()
+}).strict();
+
+export const SkillUncheckedUpdateInputSchema: z.ZodType<Prisma.SkillUncheckedUpdateInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  sCategoryId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillCreateManyInputSchema: z.ZodType<Prisma.SkillCreateManyInput> = z.object({
+  sId: z.string().cuid().optional(),
+  sCategoryId: z.string(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillUpdateManyMutationInputSchema: z.ZodType<Prisma.SkillUpdateManyMutationInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SkillUncheckedUpdateManyInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  sCategoryId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -2140,6 +2531,109 @@ export const EnumProjectStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumP
   _max: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional()
 }).strict();
 
+export const SkillListRelationFilterSchema: z.ZodType<Prisma.SkillListRelationFilter> = z.object({
+  every: z.lazy(() => SkillWhereInputSchema).optional(),
+  some: z.lazy(() => SkillWhereInputSchema).optional(),
+  none: z.lazy(() => SkillWhereInputSchema).optional()
+}).strict();
+
+export const SkillOrderByRelationAggregateInputSchema: z.ZodType<Prisma.SkillOrderByRelationAggregateInput> = z.object({
+  _count: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillCategoryCountOrderByAggregateInputSchema: z.ZodType<Prisma.SkillCategoryCountOrderByAggregateInput> = z.object({
+  sCatId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillCategoryMaxOrderByAggregateInputSchema: z.ZodType<Prisma.SkillCategoryMaxOrderByAggregateInput> = z.object({
+  sCatId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillCategoryMinOrderByAggregateInputSchema: z.ZodType<Prisma.SkillCategoryMinOrderByAggregateInput> = z.object({
+  sCatId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const EnumSkillTypeFilterSchema: z.ZodType<Prisma.EnumSkillTypeFilter> = z.object({
+  equals: z.lazy(() => SkillTypeSchema).optional(),
+  in: z.lazy(() => SkillTypeSchema).array().optional(),
+  notIn: z.lazy(() => SkillTypeSchema).array().optional(),
+  not: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => NestedEnumSkillTypeFilterSchema) ]).optional(),
+}).strict();
+
+export const SkillCategoryNullableScalarRelationFilterSchema: z.ZodType<Prisma.SkillCategoryNullableScalarRelationFilter> = z.object({
+  is: z.lazy(() => SkillCategoryWhereInputSchema).optional().nullable(),
+  isNot: z.lazy(() => SkillCategoryWhereInputSchema).optional().nullable()
+}).strict();
+
+export const SkillCountOrderByAggregateInputSchema: z.ZodType<Prisma.SkillCountOrderByAggregateInput> = z.object({
+  sId: z.lazy(() => SortOrderSchema).optional(),
+  sCategoryId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  proficiency: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillAvgOrderByAggregateInputSchema: z.ZodType<Prisma.SkillAvgOrderByAggregateInput> = z.object({
+  proficiency: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillMaxOrderByAggregateInputSchema: z.ZodType<Prisma.SkillMaxOrderByAggregateInput> = z.object({
+  sId: z.lazy(() => SortOrderSchema).optional(),
+  sCategoryId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  proficiency: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillMinOrderByAggregateInputSchema: z.ZodType<Prisma.SkillMinOrderByAggregateInput> = z.object({
+  sId: z.lazy(() => SortOrderSchema).optional(),
+  sCategoryId: z.lazy(() => SortOrderSchema).optional(),
+  name: z.lazy(() => SortOrderSchema).optional(),
+  proficiency: z.lazy(() => SortOrderSchema).optional(),
+  icon: z.lazy(() => SortOrderSchema).optional(),
+  type: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const SkillSumOrderByAggregateInputSchema: z.ZodType<Prisma.SkillSumOrderByAggregateInput> = z.object({
+  proficiency: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const EnumSkillTypeWithAggregatesFilterSchema: z.ZodType<Prisma.EnumSkillTypeWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => SkillTypeSchema).optional(),
+  in: z.lazy(() => SkillTypeSchema).array().optional(),
+  notIn: z.lazy(() => SkillTypeSchema).array().optional(),
+  not: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => NestedEnumSkillTypeWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumSkillTypeFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumSkillTypeFilterSchema).optional()
+}).strict();
+
 export const AccountCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateNestedManyWithoutUserInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -2453,6 +2947,68 @@ export const EnumProjectStatusFieldUpdateOperationsInputSchema: z.ZodType<Prisma
   set: z.lazy(() => ProjectStatusSchema).optional()
 }).strict();
 
+export const SkillCreateNestedManyWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillCreateNestedManyWithoutSkillCategoryInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema).array(),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SkillCreateManySkillCategoryInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const SkillUncheckedCreateNestedManyWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUncheckedCreateNestedManyWithoutSkillCategoryInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema).array(),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SkillCreateManySkillCategoryInputEnvelopeSchema).optional(),
+  connect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+}).strict();
+
+export const SkillUpdateManyWithoutSkillCategoryNestedInputSchema: z.ZodType<Prisma.SkillUpdateManyWithoutSkillCategoryNestedInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema).array(),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => SkillUpsertWithWhereUniqueWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpsertWithWhereUniqueWithoutSkillCategoryInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SkillCreateManySkillCategoryInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => SkillUpdateWithWhereUniqueWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpdateWithWhereUniqueWithoutSkillCategoryInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => SkillUpdateManyWithWhereWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpdateManyWithWhereWithoutSkillCategoryInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => SkillScalarWhereInputSchema),z.lazy(() => SkillScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const SkillUncheckedUpdateManyWithoutSkillCategoryNestedInputSchema: z.ZodType<Prisma.SkillUncheckedUpdateManyWithoutSkillCategoryNestedInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema).array(),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema).array() ]).optional(),
+  connectOrCreate: z.union([ z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema),z.lazy(() => SkillCreateOrConnectWithoutSkillCategoryInputSchema).array() ]).optional(),
+  upsert: z.union([ z.lazy(() => SkillUpsertWithWhereUniqueWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpsertWithWhereUniqueWithoutSkillCategoryInputSchema).array() ]).optional(),
+  createMany: z.lazy(() => SkillCreateManySkillCategoryInputEnvelopeSchema).optional(),
+  set: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  disconnect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  delete: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  connect: z.union([ z.lazy(() => SkillWhereUniqueInputSchema),z.lazy(() => SkillWhereUniqueInputSchema).array() ]).optional(),
+  update: z.union([ z.lazy(() => SkillUpdateWithWhereUniqueWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpdateWithWhereUniqueWithoutSkillCategoryInputSchema).array() ]).optional(),
+  updateMany: z.union([ z.lazy(() => SkillUpdateManyWithWhereWithoutSkillCategoryInputSchema),z.lazy(() => SkillUpdateManyWithWhereWithoutSkillCategoryInputSchema).array() ]).optional(),
+  deleteMany: z.union([ z.lazy(() => SkillScalarWhereInputSchema),z.lazy(() => SkillScalarWhereInputSchema).array() ]).optional(),
+}).strict();
+
+export const SkillCategoryCreateNestedOneWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryCreateNestedOneWithoutSkillsInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCategoryCreateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedCreateWithoutSkillsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => SkillCategoryCreateOrConnectWithoutSkillsInputSchema).optional(),
+  connect: z.lazy(() => SkillCategoryWhereUniqueInputSchema).optional()
+}).strict();
+
+export const EnumSkillTypeFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumSkillTypeFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => SkillTypeSchema).optional()
+}).strict();
+
+export const SkillCategoryUpdateOneWithoutSkillsNestedInputSchema: z.ZodType<Prisma.SkillCategoryUpdateOneWithoutSkillsNestedInput> = z.object({
+  create: z.union([ z.lazy(() => SkillCategoryCreateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedCreateWithoutSkillsInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => SkillCategoryCreateOrConnectWithoutSkillsInputSchema).optional(),
+  upsert: z.lazy(() => SkillCategoryUpsertWithoutSkillsInputSchema).optional(),
+  disconnect: z.union([ z.boolean(),z.lazy(() => SkillCategoryWhereInputSchema) ]).optional(),
+  delete: z.union([ z.boolean(),z.lazy(() => SkillCategoryWhereInputSchema) ]).optional(),
+  connect: z.lazy(() => SkillCategoryWhereUniqueInputSchema).optional(),
+  update: z.union([ z.lazy(() => SkillCategoryUpdateToOneWithWhereWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUpdateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedUpdateWithoutSkillsInputSchema) ]).optional(),
+}).strict();
+
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -2686,6 +3242,23 @@ export const NestedEnumProjectStatusWithAggregatesFilterSchema: z.ZodType<Prisma
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional()
+}).strict();
+
+export const NestedEnumSkillTypeFilterSchema: z.ZodType<Prisma.NestedEnumSkillTypeFilter> = z.object({
+  equals: z.lazy(() => SkillTypeSchema).optional(),
+  in: z.lazy(() => SkillTypeSchema).array().optional(),
+  notIn: z.lazy(() => SkillTypeSchema).array().optional(),
+  not: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => NestedEnumSkillTypeFilterSchema) ]).optional(),
+}).strict();
+
+export const NestedEnumSkillTypeWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumSkillTypeWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => SkillTypeSchema).optional(),
+  in: z.lazy(() => SkillTypeSchema).array().optional(),
+  notIn: z.lazy(() => SkillTypeSchema).array().optional(),
+  not: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => NestedEnumSkillTypeWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumSkillTypeFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumSkillTypeFilterSchema).optional()
 }).strict();
 
 export const AccountCreateWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateWithoutUserInput> = z.object({
@@ -3199,6 +3772,121 @@ export const UserUncheckedUpdateWithoutBlogsInputSchema: z.ZodType<Prisma.UserUn
   Authenticator: z.lazy(() => AuthenticatorUncheckedUpdateManyWithoutUserNestedInputSchema).optional()
 }).strict();
 
+export const SkillCreateWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillCreateWithoutSkillCategoryInput> = z.object({
+  sId: z.string().cuid().optional(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillUncheckedCreateWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUncheckedCreateWithoutSkillCategoryInput> = z.object({
+  sId: z.string().cuid().optional(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillCreateOrConnectWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillCreateOrConnectWithoutSkillCategoryInput> = z.object({
+  where: z.lazy(() => SkillWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema) ]),
+}).strict();
+
+export const SkillCreateManySkillCategoryInputEnvelopeSchema: z.ZodType<Prisma.SkillCreateManySkillCategoryInputEnvelope> = z.object({
+  data: z.union([ z.lazy(() => SkillCreateManySkillCategoryInputSchema),z.lazy(() => SkillCreateManySkillCategoryInputSchema).array() ]),
+  skipDuplicates: z.boolean().optional()
+}).strict();
+
+export const SkillUpsertWithWhereUniqueWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUpsertWithWhereUniqueWithoutSkillCategoryInput> = z.object({
+  where: z.lazy(() => SkillWhereUniqueInputSchema),
+  update: z.union([ z.lazy(() => SkillUpdateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedUpdateWithoutSkillCategoryInputSchema) ]),
+  create: z.union([ z.lazy(() => SkillCreateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedCreateWithoutSkillCategoryInputSchema) ]),
+}).strict();
+
+export const SkillUpdateWithWhereUniqueWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUpdateWithWhereUniqueWithoutSkillCategoryInput> = z.object({
+  where: z.lazy(() => SkillWhereUniqueInputSchema),
+  data: z.union([ z.lazy(() => SkillUpdateWithoutSkillCategoryInputSchema),z.lazy(() => SkillUncheckedUpdateWithoutSkillCategoryInputSchema) ]),
+}).strict();
+
+export const SkillUpdateManyWithWhereWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUpdateManyWithWhereWithoutSkillCategoryInput> = z.object({
+  where: z.lazy(() => SkillScalarWhereInputSchema),
+  data: z.union([ z.lazy(() => SkillUpdateManyMutationInputSchema),z.lazy(() => SkillUncheckedUpdateManyWithoutSkillCategoryInputSchema) ]),
+}).strict();
+
+export const SkillScalarWhereInputSchema: z.ZodType<Prisma.SkillScalarWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => SkillScalarWhereInputSchema),z.lazy(() => SkillScalarWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => SkillScalarWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => SkillScalarWhereInputSchema),z.lazy(() => SkillScalarWhereInputSchema).array() ]).optional(),
+  sId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  sCategoryId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  proficiency: z.union([ z.lazy(() => IntFilterSchema),z.number() ]).optional(),
+  icon: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  type: z.union([ z.lazy(() => EnumSkillTypeFilterSchema),z.lazy(() => SkillTypeSchema) ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const SkillCategoryCreateWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryCreateWithoutSkillsInput> = z.object({
+  sCatId: z.string().cuid().optional(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillCategoryUncheckedCreateWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryUncheckedCreateWithoutSkillsInput> = z.object({
+  sCatId: z.string().cuid().optional(),
+  name: z.string(),
+  icon: z.string(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillCategoryCreateOrConnectWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryCreateOrConnectWithoutSkillsInput> = z.object({
+  where: z.lazy(() => SkillCategoryWhereUniqueInputSchema),
+  create: z.union([ z.lazy(() => SkillCategoryCreateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedCreateWithoutSkillsInputSchema) ]),
+}).strict();
+
+export const SkillCategoryUpsertWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryUpsertWithoutSkillsInput> = z.object({
+  update: z.union([ z.lazy(() => SkillCategoryUpdateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedUpdateWithoutSkillsInputSchema) ]),
+  create: z.union([ z.lazy(() => SkillCategoryCreateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedCreateWithoutSkillsInputSchema) ]),
+  where: z.lazy(() => SkillCategoryWhereInputSchema).optional()
+}).strict();
+
+export const SkillCategoryUpdateToOneWithWhereWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryUpdateToOneWithWhereWithoutSkillsInput> = z.object({
+  where: z.lazy(() => SkillCategoryWhereInputSchema).optional(),
+  data: z.union([ z.lazy(() => SkillCategoryUpdateWithoutSkillsInputSchema),z.lazy(() => SkillCategoryUncheckedUpdateWithoutSkillsInputSchema) ]),
+}).strict();
+
+export const SkillCategoryUpdateWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryUpdateWithoutSkillsInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillCategoryUncheckedUpdateWithoutSkillsInputSchema: z.ZodType<Prisma.SkillCategoryUncheckedUpdateWithoutSkillsInput> = z.object({
+  sCatId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
 export const AccountCreateManyUserInputSchema: z.ZodType<Prisma.AccountCreateManyUserInput> = z.object({
   id: z.string().cuid().optional(),
   type: z.string(),
@@ -3374,6 +4062,50 @@ export const BlogUncheckedUpdateManyWithoutAuthorInputSchema: z.ZodType<Prisma.B
   featuredImage: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   tags: z.union([ z.lazy(() => BlogUpdatetagsInputSchema),z.string().array() ]).optional(),
   status: z.union([ z.lazy(() => BlogStatusSchema),z.lazy(() => EnumBlogStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillCreateManySkillCategoryInputSchema: z.ZodType<Prisma.SkillCreateManySkillCategoryInput> = z.object({
+  sId: z.string().cuid().optional(),
+  name: z.string(),
+  proficiency: z.number().int(),
+  icon: z.string(),
+  type: z.lazy(() => SkillTypeSchema).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const SkillUpdateWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUpdateWithoutSkillCategoryInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillUncheckedUpdateWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUncheckedUpdateWithoutSkillCategoryInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const SkillUncheckedUpdateManyWithoutSkillCategoryInputSchema: z.ZodType<Prisma.SkillUncheckedUpdateManyWithoutSkillCategoryInput> = z.object({
+  sId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  proficiency: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+  icon: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  type: z.union([ z.lazy(() => SkillTypeSchema),z.lazy(() => EnumSkillTypeFieldUpdateOperationsInputSchema) ]).optional(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -3807,6 +4539,130 @@ export const ProjectFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ProjectFindUni
   where: ProjectWhereUniqueInputSchema,
 }).strict() ;
 
+export const SkillCategoryFindFirstArgsSchema: z.ZodType<Prisma.SkillCategoryFindFirstArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereInputSchema.optional(),
+  orderBy: z.union([ SkillCategoryOrderByWithRelationInputSchema.array(),SkillCategoryOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillCategoryWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillCategoryScalarFieldEnumSchema,SkillCategoryScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillCategoryFindFirstOrThrowArgsSchema: z.ZodType<Prisma.SkillCategoryFindFirstOrThrowArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereInputSchema.optional(),
+  orderBy: z.union([ SkillCategoryOrderByWithRelationInputSchema.array(),SkillCategoryOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillCategoryWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillCategoryScalarFieldEnumSchema,SkillCategoryScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillCategoryFindManyArgsSchema: z.ZodType<Prisma.SkillCategoryFindManyArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereInputSchema.optional(),
+  orderBy: z.union([ SkillCategoryOrderByWithRelationInputSchema.array(),SkillCategoryOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillCategoryWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillCategoryScalarFieldEnumSchema,SkillCategoryScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillCategoryAggregateArgsSchema: z.ZodType<Prisma.SkillCategoryAggregateArgs> = z.object({
+  where: SkillCategoryWhereInputSchema.optional(),
+  orderBy: z.union([ SkillCategoryOrderByWithRelationInputSchema.array(),SkillCategoryOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillCategoryWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const SkillCategoryGroupByArgsSchema: z.ZodType<Prisma.SkillCategoryGroupByArgs> = z.object({
+  where: SkillCategoryWhereInputSchema.optional(),
+  orderBy: z.union([ SkillCategoryOrderByWithAggregationInputSchema.array(),SkillCategoryOrderByWithAggregationInputSchema ]).optional(),
+  by: SkillCategoryScalarFieldEnumSchema.array(),
+  having: SkillCategoryScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const SkillCategoryFindUniqueArgsSchema: z.ZodType<Prisma.SkillCategoryFindUniqueArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillCategoryFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.SkillCategoryFindUniqueOrThrowArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillFindFirstArgsSchema: z.ZodType<Prisma.SkillFindFirstArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereInputSchema.optional(),
+  orderBy: z.union([ SkillOrderByWithRelationInputSchema.array(),SkillOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillScalarFieldEnumSchema,SkillScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillFindFirstOrThrowArgsSchema: z.ZodType<Prisma.SkillFindFirstOrThrowArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereInputSchema.optional(),
+  orderBy: z.union([ SkillOrderByWithRelationInputSchema.array(),SkillOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillScalarFieldEnumSchema,SkillScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillFindManyArgsSchema: z.ZodType<Prisma.SkillFindManyArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereInputSchema.optional(),
+  orderBy: z.union([ SkillOrderByWithRelationInputSchema.array(),SkillOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ SkillScalarFieldEnumSchema,SkillScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const SkillAggregateArgsSchema: z.ZodType<Prisma.SkillAggregateArgs> = z.object({
+  where: SkillWhereInputSchema.optional(),
+  orderBy: z.union([ SkillOrderByWithRelationInputSchema.array(),SkillOrderByWithRelationInputSchema ]).optional(),
+  cursor: SkillWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const SkillGroupByArgsSchema: z.ZodType<Prisma.SkillGroupByArgs> = z.object({
+  where: SkillWhereInputSchema.optional(),
+  orderBy: z.union([ SkillOrderByWithAggregationInputSchema.array(),SkillOrderByWithAggregationInputSchema ]).optional(),
+  by: SkillScalarFieldEnumSchema.array(),
+  having: SkillScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const SkillFindUniqueArgsSchema: z.ZodType<Prisma.SkillFindUniqueArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.SkillFindUniqueOrThrowArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereUniqueInputSchema,
+}).strict() ;
+
 export const UserCreateArgsSchema: z.ZodType<Prisma.UserCreateArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
@@ -4174,5 +5030,113 @@ export const ProjectUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.ProjectUpdat
 
 export const ProjectDeleteManyArgsSchema: z.ZodType<Prisma.ProjectDeleteManyArgs> = z.object({
   where: ProjectWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillCategoryCreateArgsSchema: z.ZodType<Prisma.SkillCategoryCreateArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  data: z.union([ SkillCategoryCreateInputSchema,SkillCategoryUncheckedCreateInputSchema ]),
+}).strict() ;
+
+export const SkillCategoryUpsertArgsSchema: z.ZodType<Prisma.SkillCategoryUpsertArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereUniqueInputSchema,
+  create: z.union([ SkillCategoryCreateInputSchema,SkillCategoryUncheckedCreateInputSchema ]),
+  update: z.union([ SkillCategoryUpdateInputSchema,SkillCategoryUncheckedUpdateInputSchema ]),
+}).strict() ;
+
+export const SkillCategoryCreateManyArgsSchema: z.ZodType<Prisma.SkillCategoryCreateManyArgs> = z.object({
+  data: z.union([ SkillCategoryCreateManyInputSchema,SkillCategoryCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const SkillCategoryCreateManyAndReturnArgsSchema: z.ZodType<Prisma.SkillCategoryCreateManyAndReturnArgs> = z.object({
+  data: z.union([ SkillCategoryCreateManyInputSchema,SkillCategoryCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const SkillCategoryDeleteArgsSchema: z.ZodType<Prisma.SkillCategoryDeleteArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  where: SkillCategoryWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillCategoryUpdateArgsSchema: z.ZodType<Prisma.SkillCategoryUpdateArgs> = z.object({
+  select: SkillCategorySelectSchema.optional(),
+  include: SkillCategoryIncludeSchema.optional(),
+  data: z.union([ SkillCategoryUpdateInputSchema,SkillCategoryUncheckedUpdateInputSchema ]),
+  where: SkillCategoryWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillCategoryUpdateManyArgsSchema: z.ZodType<Prisma.SkillCategoryUpdateManyArgs> = z.object({
+  data: z.union([ SkillCategoryUpdateManyMutationInputSchema,SkillCategoryUncheckedUpdateManyInputSchema ]),
+  where: SkillCategoryWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillCategoryUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.SkillCategoryUpdateManyAndReturnArgs> = z.object({
+  data: z.union([ SkillCategoryUpdateManyMutationInputSchema,SkillCategoryUncheckedUpdateManyInputSchema ]),
+  where: SkillCategoryWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillCategoryDeleteManyArgsSchema: z.ZodType<Prisma.SkillCategoryDeleteManyArgs> = z.object({
+  where: SkillCategoryWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillCreateArgsSchema: z.ZodType<Prisma.SkillCreateArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  data: z.union([ SkillCreateInputSchema,SkillUncheckedCreateInputSchema ]),
+}).strict() ;
+
+export const SkillUpsertArgsSchema: z.ZodType<Prisma.SkillUpsertArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereUniqueInputSchema,
+  create: z.union([ SkillCreateInputSchema,SkillUncheckedCreateInputSchema ]),
+  update: z.union([ SkillUpdateInputSchema,SkillUncheckedUpdateInputSchema ]),
+}).strict() ;
+
+export const SkillCreateManyArgsSchema: z.ZodType<Prisma.SkillCreateManyArgs> = z.object({
+  data: z.union([ SkillCreateManyInputSchema,SkillCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const SkillCreateManyAndReturnArgsSchema: z.ZodType<Prisma.SkillCreateManyAndReturnArgs> = z.object({
+  data: z.union([ SkillCreateManyInputSchema,SkillCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const SkillDeleteArgsSchema: z.ZodType<Prisma.SkillDeleteArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  where: SkillWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillUpdateArgsSchema: z.ZodType<Prisma.SkillUpdateArgs> = z.object({
+  select: SkillSelectSchema.optional(),
+  include: SkillIncludeSchema.optional(),
+  data: z.union([ SkillUpdateInputSchema,SkillUncheckedUpdateInputSchema ]),
+  where: SkillWhereUniqueInputSchema,
+}).strict() ;
+
+export const SkillUpdateManyArgsSchema: z.ZodType<Prisma.SkillUpdateManyArgs> = z.object({
+  data: z.union([ SkillUpdateManyMutationInputSchema,SkillUncheckedUpdateManyInputSchema ]),
+  where: SkillWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.SkillUpdateManyAndReturnArgs> = z.object({
+  data: z.union([ SkillUpdateManyMutationInputSchema,SkillUncheckedUpdateManyInputSchema ]),
+  where: SkillWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const SkillDeleteManyArgsSchema: z.ZodType<Prisma.SkillDeleteManyArgs> = z.object({
+  where: SkillWhereInputSchema.optional(),
   limit: z.number().optional(),
 }).strict() ;

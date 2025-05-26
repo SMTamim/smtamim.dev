@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import { formatDate } from 'date-fns';
 import { NoDataFound } from "@/components/shared/no-data-found";
 import { TBlog } from "@/lib/types";
-import { deleteBlog, getAllBlogs, updateBlogStatus } from "@/lib/services/blog";
+import { deleteBlog, getAllBlogs, updateBlogStatus } from "@/lib/services/blog.actions";
 import ConfirmModal from "@/components/shared/confirm-modal";
 import { toast } from "sonner";
 import { AlertCircle, Check, ChevronDown, XCircle } from "lucide-react";

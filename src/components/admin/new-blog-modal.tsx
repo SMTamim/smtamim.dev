@@ -18,7 +18,7 @@ import ImageDropzone from '../shared/image-dropzone';
 import { TagsInput } from '../shared/tags-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { blogSchema } from '@/lib/schemas/blog.schema';
-import { createBlog, getSingleBlog, updateBlog } from '@/lib/services/blog';
+import { createBlog, getSingleBlog, updateBlog } from '@/lib/services/blog.actions';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 

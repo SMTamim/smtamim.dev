@@ -23,7 +23,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import RichTextEditor from "@/components/admin/blog-editor";
 import { ProjectFormSchema } from "@/lib/types/validationSchemas";
-import { createProject } from "@/lib/services/project";
+import { createProject } from "@/lib/services/project.actions";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export type ProjectFormValues = z.infer<typeof ProjectFormSchema>;
