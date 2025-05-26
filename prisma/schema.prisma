@@ -115,3 +115,26 @@ model Blog {
 
   @@map("blogs")
 }
+
+model Project {
+  pId              String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  shortDescription String
+  fullDescription  String
+  technologies     String[]
+  features         String[]
+  challenges       String[]
+  frontendDemoUrl  String?  @map("frontend_demo_url")
+  backendDemoUrl   String?  @map("backend_demo_url")
+  frontendGitUrl   String?  @map("frontend_git_url")
+  backendGitUrl    String?  @map("backend_git_url")
+
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  PLANNING
+  ONGOING
+  COMPLETE
+}
