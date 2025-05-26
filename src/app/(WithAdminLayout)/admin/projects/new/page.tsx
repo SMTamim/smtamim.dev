@@ -22,12 +22,11 @@ import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { useState } from "react";
 import { toast } from "sonner";
 import RichTextEditor from "@/components/admin/blog-editor";
+import { ProjectFormSchema } from "@/lib/types/validationSchemas";
+import { createProject } from "@/lib/services/project";
+import { Checkbox } from "@/components/ui/checkbox";
 
-// Convert technologies to Option type
-// const techOptions: Option[] = technologies.map(tech => ({
-//     label: tech,
-//     value: tech,
-// }));
+export type ProjectFormValues = z.infer<typeof ProjectFormSchema>;
 
 const techOptions: Option[] = [
     { label: 'nextjs', value: 'nextjs' },
@@ -43,31 +42,15 @@ const techOptions: Option[] = [
     { label: 'Astro', value: 'astro' },
 ];
 
-// Zod schema for validation
-const projectFormSchema = z.object({
-    pId: z.string().min(1, "Project ID is required"),
-    title: z.string().min(1, "Title is required").max(100),
-    slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens"),
-    shortDescription: z.string().min(10, "Description must be at least 10 characters").max(200),
-    fullDescription: z.string().min(50, "Description must be at least 50 characters"),
-    technologies: z.array(z.string()).min(1, "Select at least one technology"),
-    features: z.array(z.string()).min(1, "Add at least one feature"),
-    challenges: z.array(z.string()).min(1, "Add at least one challenge"),
-    frontendDemoUrl: z.string().url("Invalid URL").or(z.literal("")),
-    backendDemoUrl: z.string().url("Invalid URL").or(z.literal("")),
-    frontendGitUrl: z.string().url("Invalid URL").or(z.literal("")),
-    backendGitUrl: z.string().url("Invalid URL").or(z.literal("")),
-});
-
 export default function AddProjectPage() {
     const router = useRouter();
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
 
-    const form = useForm<z.infer<typeof projectFormSchema>>({
-        resolver: zodResolver(projectFormSchema),
+    const form = useForm<ProjectFormValues>({
+        resolver: zodResolver(ProjectFormSchema),
         defaultValues: {
-            pId: "",
+            isFeatured: false,
             title: "",
             slug: "",
             shortDescription: "",
@@ -108,25 +91,43 @@ export default function AddProjectPage() {
         setFiles(newFiles);
     };
 
-    const onSubmit = async (data: z.infer<typeof projectFormSchema>) => {
+    const onSubmit = async (data: z.infer<typeof ProjectFormSchema>) => {
+        const toastId = toast.loading("Uploading images...");
         try {
-            // Here you would typically:
-            // 1. Upload images to storage
-            // 2. Save project data to your database
-            console.log("Project data:", {
+            const images = files.map(async (file) => {
+                if (file instanceof File) {
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    const res = await fetch("/api/upload", {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const json = await res.json();
+                    console.log({ json });
+                    return json.url as string;
+                }
+                return "";
+            })
+
+            const imageUrls = (await Promise.all(images)).filter((url) => url !== "");
+
+            console.log("Project images:", files);
+            toast.loading("Creating project...", { id: toastId })
+            const response = await createProject({
                 ...data,
+                images: imageUrls,
                 features: data.features.filter(f => f.trim() !== ""),
                 challenges: data.challenges.filter(c => c.trim() !== ""),
             });
-            console.log("Project images:", files);
-
-            toast.success("Project created successfully");
-
-            // Redirect to projects list
-            router.push("/admin/projects");
+            if (response.success) {
+                toast.success("Project created successfully", { id: toastId });
+                router.push("/admin/projects");
+            }
         } catch (error) {
             if (error instanceof Error) {
-                toast.error(error.message || toast.error('An error occurred while saving the project.'));
+                toast.error(error.message || toast.error('An error occurred while saving the project.', { id: toastId }));
             }
         }
     };
@@ -148,15 +149,35 @@ export default function AddProjectPage() {
                         {/* Left Column */}
                         <div className="space-y-6">
                             {/* Basic Info */}
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="flex gap-4">
+                                {/* Project Title */}
                                 <FormField
                                     control={form.control}
                                     name="title"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="flex-1">
                                             <FormLabel>Project Title*</FormLabel>
                                             <FormControl>
                                                 <Input placeholder="My Awesome Project" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Is Featured Checkbox */}
+                                <FormField
+                                    control={form.control}
+                                    name="isFeatured"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Featured</FormLabel>
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="mt-2"
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -238,7 +259,7 @@ export default function AddProjectPage() {
                                                 options={techOptions}
                                                 placeholder="Select technologies..."
                                                 value={field.value.map(tech => ({ label: tech, value: tech }))}
-                                                onChange={(options) =>
+                                                onChange={(options: Option[]) =>
                                                     form.setValue("technologies", options.map(opt => opt.value))
                                                 }
                                             />

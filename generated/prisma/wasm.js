@@ -184,6 +184,27 @@ exports.Prisma.BlogScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProjectScalarFieldEnum = {
+  pId: 'pId',
+  title: 'title',
+  slug: 'slug',
+  shortDescription: 'shortDescription',
+  fullDescription: 'fullDescription',
+  images: 'images',
+  technologies: 'technologies',
+  features: 'features',
+  challenges: 'challenges',
+  status: 'status',
+  frontendDemoUrl: 'frontendDemoUrl',
+  backendDemoUrl: 'backendDemoUrl',
+  frontendGitUrl: 'frontendGitUrl',
+  backendGitUrl: 'backendGitUrl',
+  isFeatured: 'isFeatured',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -204,13 +225,20 @@ exports.BlogStatus = exports.$Enums.BlogStatus = {
   UNPUBLISHED: 'UNPUBLISHED'
 };
 
+exports.ProjectStatus = exports.$Enums.ProjectStatus = {
+  PLANNING: 'PLANNING',
+  ONGOING: 'ONGOING',
+  COMPLETE: 'COMPLETE'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
   Authenticator: 'Authenticator',
-  Blog: 'Blog'
+  Blog: 'Blog',
+  Project: 'Project'
 };
 
 /**

@@ -24,6 +24,8 @@ export const AuthenticatorScalarFieldEnumSchema = z.enum(['credentialID','userId
 
 export const BlogScalarFieldEnumSchema = z.enum(['blogId','authorId','title','slug','content','readTime','visitCounter','featuredImage','tags','status','deletedAt','createdAt','updatedAt']);
 
+export const ProjectScalarFieldEnumSchema = z.enum(['pId','title','slug','shortDescription','fullDescription','images','technologies','features','challenges','status','frontendDemoUrl','backendDemoUrl','frontendGitUrl','backendGitUrl','isFeatured','deletedAt','createdAt','updatedAt']);
+
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
@@ -33,6 +35,10 @@ export const NullsOrderSchema = z.enum(['first','last']);
 export const BlogStatusSchema = z.enum(['PUBLISHED','PENDING','UNPUBLISHED']);
 
 export type BlogStatusType = `${z.infer<typeof BlogStatusSchema>}`
+
+export const ProjectStatusSchema = z.enum(['PLANNING','ONGOING','COMPLETE']);
+
+export type ProjectStatusType = `${z.infer<typeof ProjectStatusSchema>}`
 
 /////////////////////////////////////////
 // MODELS
@@ -137,6 +143,33 @@ export const BlogSchema = z.object({
 })
 
 export type Blog = z.infer<typeof BlogSchema>
+
+/////////////////////////////////////////
+// PROJECT SCHEMA
+/////////////////////////////////////////
+
+export const ProjectSchema = z.object({
+  status: ProjectStatusSchema,
+  pId: z.string().cuid(),
+  title: z.string(),
+  slug: z.string(),
+  shortDescription: z.string(),
+  fullDescription: z.string(),
+  images: z.string().array(),
+  technologies: z.string().array(),
+  features: z.string().array(),
+  challenges: z.string().array(),
+  frontendDemoUrl: z.string().nullable(),
+  backendDemoUrl: z.string().nullable(),
+  frontendGitUrl: z.string().nullable(),
+  backendGitUrl: z.string().nullable(),
+  isFeatured: z.boolean(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+})
+
+export type Project = z.infer<typeof ProjectSchema>
 
 /////////////////////////////////////////
 // SELECT & INCLUDE
@@ -291,6 +324,30 @@ export const BlogSelectSchema: z.ZodType<Prisma.BlogSelect> = z.object({
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   author: z.union([z.boolean(),z.lazy(() => UserArgsSchema)]).optional(),
+}).strict()
+
+// PROJECT
+//------------------------------------------------------
+
+export const ProjectSelectSchema: z.ZodType<Prisma.ProjectSelect> = z.object({
+  pId: z.boolean().optional(),
+  title: z.boolean().optional(),
+  slug: z.boolean().optional(),
+  shortDescription: z.boolean().optional(),
+  fullDescription: z.boolean().optional(),
+  images: z.boolean().optional(),
+  technologies: z.boolean().optional(),
+  features: z.boolean().optional(),
+  challenges: z.boolean().optional(),
+  status: z.boolean().optional(),
+  frontendDemoUrl: z.boolean().optional(),
+  backendDemoUrl: z.boolean().optional(),
+  frontendGitUrl: z.boolean().optional(),
+  backendGitUrl: z.boolean().optional(),
+  isFeatured: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
 }).strict()
 
 
@@ -786,6 +843,135 @@ export const BlogScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.BlogScal
   updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
+export const ProjectWhereInputSchema: z.ZodType<Prisma.ProjectWhereInput> = z.object({
+  AND: z.union([ z.lazy(() => ProjectWhereInputSchema),z.lazy(() => ProjectWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ProjectWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ProjectWhereInputSchema),z.lazy(() => ProjectWhereInputSchema).array() ]).optional(),
+  pId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  slug: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  shortDescription: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  fullDescription: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  images: z.lazy(() => StringNullableListFilterSchema).optional(),
+  technologies: z.lazy(() => StringNullableListFilterSchema).optional(),
+  features: z.lazy(() => StringNullableListFilterSchema).optional(),
+  challenges: z.lazy(() => StringNullableListFilterSchema).optional(),
+  status: z.union([ z.lazy(() => EnumProjectStatusFilterSchema),z.lazy(() => ProjectStatusSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  backendGitUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  isFeatured: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
+export const ProjectOrderByWithRelationInputSchema: z.ZodType<Prisma.ProjectOrderByWithRelationInput> = z.object({
+  pId: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  shortDescription: z.lazy(() => SortOrderSchema).optional(),
+  fullDescription: z.lazy(() => SortOrderSchema).optional(),
+  images: z.lazy(() => SortOrderSchema).optional(),
+  technologies: z.lazy(() => SortOrderSchema).optional(),
+  features: z.lazy(() => SortOrderSchema).optional(),
+  challenges: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  frontendDemoUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  backendDemoUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  frontendGitUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  backendGitUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  isFeatured: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ProjectWhereUniqueInputSchema: z.ZodType<Prisma.ProjectWhereUniqueInput> = z.union([
+  z.object({
+    pId: z.string().cuid(),
+    slug: z.string()
+  }),
+  z.object({
+    pId: z.string().cuid(),
+  }),
+  z.object({
+    slug: z.string(),
+  }),
+])
+.and(z.object({
+  pId: z.string().cuid().optional(),
+  slug: z.string().optional(),
+  AND: z.union([ z.lazy(() => ProjectWhereInputSchema),z.lazy(() => ProjectWhereInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ProjectWhereInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ProjectWhereInputSchema),z.lazy(() => ProjectWhereInputSchema).array() ]).optional(),
+  title: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  shortDescription: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  fullDescription: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  images: z.lazy(() => StringNullableListFilterSchema).optional(),
+  technologies: z.lazy(() => StringNullableListFilterSchema).optional(),
+  features: z.lazy(() => StringNullableListFilterSchema).optional(),
+  challenges: z.lazy(() => StringNullableListFilterSchema).optional(),
+  status: z.union([ z.lazy(() => EnumProjectStatusFilterSchema),z.lazy(() => ProjectStatusSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  backendGitUrl: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  isFeatured: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+}).strict());
+
+export const ProjectOrderByWithAggregationInputSchema: z.ZodType<Prisma.ProjectOrderByWithAggregationInput> = z.object({
+  pId: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  shortDescription: z.lazy(() => SortOrderSchema).optional(),
+  fullDescription: z.lazy(() => SortOrderSchema).optional(),
+  images: z.lazy(() => SortOrderSchema).optional(),
+  technologies: z.lazy(() => SortOrderSchema).optional(),
+  features: z.lazy(() => SortOrderSchema).optional(),
+  challenges: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  frontendDemoUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  backendDemoUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  frontendGitUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  backendGitUrl: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  isFeatured: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  _count: z.lazy(() => ProjectCountOrderByAggregateInputSchema).optional(),
+  _max: z.lazy(() => ProjectMaxOrderByAggregateInputSchema).optional(),
+  _min: z.lazy(() => ProjectMinOrderByAggregateInputSchema).optional()
+}).strict();
+
+export const ProjectScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.ProjectScalarWhereWithAggregatesInput> = z.object({
+  AND: z.union([ z.lazy(() => ProjectScalarWhereWithAggregatesInputSchema),z.lazy(() => ProjectScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  OR: z.lazy(() => ProjectScalarWhereWithAggregatesInputSchema).array().optional(),
+  NOT: z.union([ z.lazy(() => ProjectScalarWhereWithAggregatesInputSchema),z.lazy(() => ProjectScalarWhereWithAggregatesInputSchema).array() ]).optional(),
+  pId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  title: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  slug: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  shortDescription: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  fullDescription: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  images: z.lazy(() => StringNullableListFilterSchema).optional(),
+  technologies: z.lazy(() => StringNullableListFilterSchema).optional(),
+  features: z.lazy(() => StringNullableListFilterSchema).optional(),
+  challenges: z.lazy(() => StringNullableListFilterSchema).optional(),
+  status: z.union([ z.lazy(() => EnumProjectStatusWithAggregatesFilterSchema),z.lazy(() => ProjectStatusSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  backendGitUrl: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  isFeatured: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+}).strict();
+
 export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object({
   id: z.string().cuid().optional(),
   name: z.string().optional().nullable(),
@@ -1241,6 +1427,153 @@ export const BlogUncheckedUpdateManyInputSchema: z.ZodType<Prisma.BlogUncheckedU
   featuredImage: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   tags: z.union([ z.lazy(() => BlogUpdatetagsInputSchema),z.string().array() ]).optional(),
   status: z.union([ z.lazy(() => BlogStatusSchema),z.lazy(() => EnumBlogStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ProjectCreateInputSchema: z.ZodType<Prisma.ProjectCreateInput> = z.object({
+  pId: z.string().cuid().optional(),
+  title: z.string(),
+  slug: z.string(),
+  shortDescription: z.string(),
+  fullDescription: z.string(),
+  images: z.union([ z.lazy(() => ProjectCreateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectCreatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectCreatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectCreatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.lazy(() => ProjectStatusSchema).optional(),
+  frontendDemoUrl: z.string().optional().nullable(),
+  backendDemoUrl: z.string().optional().nullable(),
+  frontendGitUrl: z.string().optional().nullable(),
+  backendGitUrl: z.string().optional().nullable(),
+  isFeatured: z.boolean().optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ProjectUncheckedCreateInputSchema: z.ZodType<Prisma.ProjectUncheckedCreateInput> = z.object({
+  pId: z.string().cuid().optional(),
+  title: z.string(),
+  slug: z.string(),
+  shortDescription: z.string(),
+  fullDescription: z.string(),
+  images: z.union([ z.lazy(() => ProjectCreateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectCreatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectCreatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectCreatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.lazy(() => ProjectStatusSchema).optional(),
+  frontendDemoUrl: z.string().optional().nullable(),
+  backendDemoUrl: z.string().optional().nullable(),
+  frontendGitUrl: z.string().optional().nullable(),
+  backendGitUrl: z.string().optional().nullable(),
+  isFeatured: z.boolean().optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ProjectUpdateInputSchema: z.ZodType<Prisma.ProjectUpdateInput> = z.object({
+  pId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  slug: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  shortDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  fullDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  images: z.union([ z.lazy(() => ProjectUpdateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectUpdatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectUpdatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectUpdatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => EnumProjectStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isFeatured: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ProjectUncheckedUpdateInputSchema: z.ZodType<Prisma.ProjectUncheckedUpdateInput> = z.object({
+  pId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  slug: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  shortDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  fullDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  images: z.union([ z.lazy(() => ProjectUpdateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectUpdatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectUpdatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectUpdatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => EnumProjectStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isFeatured: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ProjectCreateManyInputSchema: z.ZodType<Prisma.ProjectCreateManyInput> = z.object({
+  pId: z.string().cuid().optional(),
+  title: z.string(),
+  slug: z.string(),
+  shortDescription: z.string(),
+  fullDescription: z.string(),
+  images: z.union([ z.lazy(() => ProjectCreateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectCreatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectCreatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectCreatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.lazy(() => ProjectStatusSchema).optional(),
+  frontendDemoUrl: z.string().optional().nullable(),
+  backendDemoUrl: z.string().optional().nullable(),
+  frontendGitUrl: z.string().optional().nullable(),
+  backendGitUrl: z.string().optional().nullable(),
+  isFeatured: z.boolean().optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
+}).strict();
+
+export const ProjectUpdateManyMutationInputSchema: z.ZodType<Prisma.ProjectUpdateManyMutationInput> = z.object({
+  pId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  slug: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  shortDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  fullDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  images: z.union([ z.lazy(() => ProjectUpdateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectUpdatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectUpdatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectUpdatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => EnumProjectStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isFeatured: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+}).strict();
+
+export const ProjectUncheckedUpdateManyInputSchema: z.ZodType<Prisma.ProjectUncheckedUpdateManyInput> = z.object({
+  pId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  title: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  slug: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  shortDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  fullDescription: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  images: z.union([ z.lazy(() => ProjectUpdateimagesInputSchema),z.string().array() ]).optional(),
+  technologies: z.union([ z.lazy(() => ProjectUpdatetechnologiesInputSchema),z.string().array() ]).optional(),
+  features: z.union([ z.lazy(() => ProjectUpdatefeaturesInputSchema),z.string().array() ]).optional(),
+  challenges: z.union([ z.lazy(() => ProjectUpdatechallengesInputSchema),z.string().array() ]).optional(),
+  status: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => EnumProjectStatusFieldUpdateOperationsInputSchema) ]).optional(),
+  frontendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendDemoUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  frontendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  backendGitUrl: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  isFeatured: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
@@ -1735,6 +2068,78 @@ export const EnumBlogStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumBlog
   _max: z.lazy(() => NestedEnumBlogStatusFilterSchema).optional()
 }).strict();
 
+export const EnumProjectStatusFilterSchema: z.ZodType<Prisma.EnumProjectStatusFilter> = z.object({
+  equals: z.lazy(() => ProjectStatusSchema).optional(),
+  in: z.lazy(() => ProjectStatusSchema).array().optional(),
+  notIn: z.lazy(() => ProjectStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => NestedEnumProjectStatusFilterSchema) ]).optional(),
+}).strict();
+
+export const ProjectCountOrderByAggregateInputSchema: z.ZodType<Prisma.ProjectCountOrderByAggregateInput> = z.object({
+  pId: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  shortDescription: z.lazy(() => SortOrderSchema).optional(),
+  fullDescription: z.lazy(() => SortOrderSchema).optional(),
+  images: z.lazy(() => SortOrderSchema).optional(),
+  technologies: z.lazy(() => SortOrderSchema).optional(),
+  features: z.lazy(() => SortOrderSchema).optional(),
+  challenges: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  frontendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  frontendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  isFeatured: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ProjectMaxOrderByAggregateInputSchema: z.ZodType<Prisma.ProjectMaxOrderByAggregateInput> = z.object({
+  pId: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  shortDescription: z.lazy(() => SortOrderSchema).optional(),
+  fullDescription: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  frontendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  frontendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  isFeatured: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const ProjectMinOrderByAggregateInputSchema: z.ZodType<Prisma.ProjectMinOrderByAggregateInput> = z.object({
+  pId: z.lazy(() => SortOrderSchema).optional(),
+  title: z.lazy(() => SortOrderSchema).optional(),
+  slug: z.lazy(() => SortOrderSchema).optional(),
+  shortDescription: z.lazy(() => SortOrderSchema).optional(),
+  fullDescription: z.lazy(() => SortOrderSchema).optional(),
+  status: z.lazy(() => SortOrderSchema).optional(),
+  frontendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendDemoUrl: z.lazy(() => SortOrderSchema).optional(),
+  frontendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  backendGitUrl: z.lazy(() => SortOrderSchema).optional(),
+  isFeatured: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const EnumProjectStatusWithAggregatesFilterSchema: z.ZodType<Prisma.EnumProjectStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => ProjectStatusSchema).optional(),
+  in: z.lazy(() => ProjectStatusSchema).array().optional(),
+  notIn: z.lazy(() => ProjectStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => NestedEnumProjectStatusWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional()
+}).strict();
+
 export const AccountCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateNestedManyWithoutUserInput> = z.object({
   create: z.union([ z.lazy(() => AccountCreateWithoutUserInputSchema),z.lazy(() => AccountCreateWithoutUserInputSchema).array(),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema),z.lazy(() => AccountUncheckedCreateWithoutUserInputSchema).array() ]).optional(),
   connectOrCreate: z.union([ z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema),z.lazy(() => AccountCreateOrConnectWithoutUserInputSchema).array() ]).optional(),
@@ -2008,6 +2413,46 @@ export const UserUpdateOneRequiredWithoutBlogsNestedInputSchema: z.ZodType<Prism
   update: z.union([ z.lazy(() => UserUpdateToOneWithWhereWithoutBlogsInputSchema),z.lazy(() => UserUpdateWithoutBlogsInputSchema),z.lazy(() => UserUncheckedUpdateWithoutBlogsInputSchema) ]).optional(),
 }).strict();
 
+export const ProjectCreateimagesInputSchema: z.ZodType<Prisma.ProjectCreateimagesInput> = z.object({
+  set: z.string().array()
+}).strict();
+
+export const ProjectCreatetechnologiesInputSchema: z.ZodType<Prisma.ProjectCreatetechnologiesInput> = z.object({
+  set: z.string().array()
+}).strict();
+
+export const ProjectCreatefeaturesInputSchema: z.ZodType<Prisma.ProjectCreatefeaturesInput> = z.object({
+  set: z.string().array()
+}).strict();
+
+export const ProjectCreatechallengesInputSchema: z.ZodType<Prisma.ProjectCreatechallengesInput> = z.object({
+  set: z.string().array()
+}).strict();
+
+export const ProjectUpdateimagesInputSchema: z.ZodType<Prisma.ProjectUpdateimagesInput> = z.object({
+  set: z.string().array().optional(),
+  push: z.union([ z.string(),z.string().array() ]).optional(),
+}).strict();
+
+export const ProjectUpdatetechnologiesInputSchema: z.ZodType<Prisma.ProjectUpdatetechnologiesInput> = z.object({
+  set: z.string().array().optional(),
+  push: z.union([ z.string(),z.string().array() ]).optional(),
+}).strict();
+
+export const ProjectUpdatefeaturesInputSchema: z.ZodType<Prisma.ProjectUpdatefeaturesInput> = z.object({
+  set: z.string().array().optional(),
+  push: z.union([ z.string(),z.string().array() ]).optional(),
+}).strict();
+
+export const ProjectUpdatechallengesInputSchema: z.ZodType<Prisma.ProjectUpdatechallengesInput> = z.object({
+  set: z.string().array().optional(),
+  push: z.union([ z.string(),z.string().array() ]).optional(),
+}).strict();
+
+export const EnumProjectStatusFieldUpdateOperationsInputSchema: z.ZodType<Prisma.EnumProjectStatusFieldUpdateOperationsInput> = z.object({
+  set: z.lazy(() => ProjectStatusSchema).optional()
+}).strict();
+
 export const NestedStringFilterSchema: z.ZodType<Prisma.NestedStringFilter> = z.object({
   equals: z.string().optional(),
   in: z.string().array().optional(),
@@ -2224,6 +2669,23 @@ export const NestedEnumBlogStatusWithAggregatesFilterSchema: z.ZodType<Prisma.Ne
   _count: z.lazy(() => NestedIntFilterSchema).optional(),
   _min: z.lazy(() => NestedEnumBlogStatusFilterSchema).optional(),
   _max: z.lazy(() => NestedEnumBlogStatusFilterSchema).optional()
+}).strict();
+
+export const NestedEnumProjectStatusFilterSchema: z.ZodType<Prisma.NestedEnumProjectStatusFilter> = z.object({
+  equals: z.lazy(() => ProjectStatusSchema).optional(),
+  in: z.lazy(() => ProjectStatusSchema).array().optional(),
+  notIn: z.lazy(() => ProjectStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => NestedEnumProjectStatusFilterSchema) ]).optional(),
+}).strict();
+
+export const NestedEnumProjectStatusWithAggregatesFilterSchema: z.ZodType<Prisma.NestedEnumProjectStatusWithAggregatesFilter> = z.object({
+  equals: z.lazy(() => ProjectStatusSchema).optional(),
+  in: z.lazy(() => ProjectStatusSchema).array().optional(),
+  notIn: z.lazy(() => ProjectStatusSchema).array().optional(),
+  not: z.union([ z.lazy(() => ProjectStatusSchema),z.lazy(() => NestedEnumProjectStatusWithAggregatesFilterSchema) ]).optional(),
+  _count: z.lazy(() => NestedIntFilterSchema).optional(),
+  _min: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional(),
+  _max: z.lazy(() => NestedEnumProjectStatusFilterSchema).optional()
 }).strict();
 
 export const AccountCreateWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateWithoutUserInput> = z.object({
@@ -3288,6 +3750,63 @@ export const BlogFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.BlogFindUniqueOrT
   where: BlogWhereUniqueInputSchema,
 }).strict() ;
 
+export const ProjectFindFirstArgsSchema: z.ZodType<Prisma.ProjectFindFirstArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereInputSchema.optional(),
+  orderBy: z.union([ ProjectOrderByWithRelationInputSchema.array(),ProjectOrderByWithRelationInputSchema ]).optional(),
+  cursor: ProjectWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ProjectScalarFieldEnumSchema,ProjectScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ProjectFindFirstOrThrowArgsSchema: z.ZodType<Prisma.ProjectFindFirstOrThrowArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereInputSchema.optional(),
+  orderBy: z.union([ ProjectOrderByWithRelationInputSchema.array(),ProjectOrderByWithRelationInputSchema ]).optional(),
+  cursor: ProjectWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ProjectScalarFieldEnumSchema,ProjectScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ProjectFindManyArgsSchema: z.ZodType<Prisma.ProjectFindManyArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereInputSchema.optional(),
+  orderBy: z.union([ ProjectOrderByWithRelationInputSchema.array(),ProjectOrderByWithRelationInputSchema ]).optional(),
+  cursor: ProjectWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+  distinct: z.union([ ProjectScalarFieldEnumSchema,ProjectScalarFieldEnumSchema.array() ]).optional(),
+}).strict() ;
+
+export const ProjectAggregateArgsSchema: z.ZodType<Prisma.ProjectAggregateArgs> = z.object({
+  where: ProjectWhereInputSchema.optional(),
+  orderBy: z.union([ ProjectOrderByWithRelationInputSchema.array(),ProjectOrderByWithRelationInputSchema ]).optional(),
+  cursor: ProjectWhereUniqueInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ProjectGroupByArgsSchema: z.ZodType<Prisma.ProjectGroupByArgs> = z.object({
+  where: ProjectWhereInputSchema.optional(),
+  orderBy: z.union([ ProjectOrderByWithAggregationInputSchema.array(),ProjectOrderByWithAggregationInputSchema ]).optional(),
+  by: ProjectScalarFieldEnumSchema.array(),
+  having: ProjectScalarWhereWithAggregatesInputSchema.optional(),
+  take: z.number().optional(),
+  skip: z.number().optional(),
+}).strict() ;
+
+export const ProjectFindUniqueArgsSchema: z.ZodType<Prisma.ProjectFindUniqueArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereUniqueInputSchema,
+}).strict() ;
+
+export const ProjectFindUniqueOrThrowArgsSchema: z.ZodType<Prisma.ProjectFindUniqueOrThrowArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereUniqueInputSchema,
+}).strict() ;
+
 export const UserCreateArgsSchema: z.ZodType<Prisma.UserCreateArgs> = z.object({
   select: UserSelectSchema.optional(),
   include: UserIncludeSchema.optional(),
@@ -3605,5 +4124,55 @@ export const BlogUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.BlogUpdateManyA
 
 export const BlogDeleteManyArgsSchema: z.ZodType<Prisma.BlogDeleteManyArgs> = z.object({
   where: BlogWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const ProjectCreateArgsSchema: z.ZodType<Prisma.ProjectCreateArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  data: z.union([ ProjectCreateInputSchema,ProjectUncheckedCreateInputSchema ]),
+}).strict() ;
+
+export const ProjectUpsertArgsSchema: z.ZodType<Prisma.ProjectUpsertArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereUniqueInputSchema,
+  create: z.union([ ProjectCreateInputSchema,ProjectUncheckedCreateInputSchema ]),
+  update: z.union([ ProjectUpdateInputSchema,ProjectUncheckedUpdateInputSchema ]),
+}).strict() ;
+
+export const ProjectCreateManyArgsSchema: z.ZodType<Prisma.ProjectCreateManyArgs> = z.object({
+  data: z.union([ ProjectCreateManyInputSchema,ProjectCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const ProjectCreateManyAndReturnArgsSchema: z.ZodType<Prisma.ProjectCreateManyAndReturnArgs> = z.object({
+  data: z.union([ ProjectCreateManyInputSchema,ProjectCreateManyInputSchema.array() ]),
+  skipDuplicates: z.boolean().optional(),
+}).strict() ;
+
+export const ProjectDeleteArgsSchema: z.ZodType<Prisma.ProjectDeleteArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  where: ProjectWhereUniqueInputSchema,
+}).strict() ;
+
+export const ProjectUpdateArgsSchema: z.ZodType<Prisma.ProjectUpdateArgs> = z.object({
+  select: ProjectSelectSchema.optional(),
+  data: z.union([ ProjectUpdateInputSchema,ProjectUncheckedUpdateInputSchema ]),
+  where: ProjectWhereUniqueInputSchema,
+}).strict() ;
+
+export const ProjectUpdateManyArgsSchema: z.ZodType<Prisma.ProjectUpdateManyArgs> = z.object({
+  data: z.union([ ProjectUpdateManyMutationInputSchema,ProjectUncheckedUpdateManyInputSchema ]),
+  where: ProjectWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const ProjectUpdateManyAndReturnArgsSchema: z.ZodType<Prisma.ProjectUpdateManyAndReturnArgs> = z.object({
+  data: z.union([ ProjectUpdateManyMutationInputSchema,ProjectUncheckedUpdateManyInputSchema ]),
+  where: ProjectWhereInputSchema.optional(),
+  limit: z.number().optional(),
+}).strict() ;
+
+export const ProjectDeleteManyArgsSchema: z.ZodType<Prisma.ProjectDeleteManyArgs> = z.object({
+  where: ProjectWhereInputSchema.optional(),
   limit: z.number().optional(),
 }).strict() ;

@@ -115,3 +115,32 @@ model Blog {
 
   @@map("blogs")
 }
+
+model Project {
+  pId              String        @id @default(cuid())
+  title            String
+  slug             String        @unique
+  shortDescription String
+  fullDescription  String
+  images           String[]
+  technologies     String[]
+  features         String[]
+  challenges       String[]
+  status           ProjectStatus @default(PLANNING)
+  frontendDemoUrl  String?       @map("frontend_demo_url")
+  backendDemoUrl   String?       @map("backend_demo_url")
+  frontendGitUrl   String?       @map("frontend_git_url")
+  backendGitUrl    String?       @map("backend_git_url")
+  isFeatured       Boolean       @default(false)
+  deletedAt        DateTime?
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @default(now()) @updatedAt @map("updated_at")
+
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  PLANNING
+  ONGOING
+  COMPLETE
+}

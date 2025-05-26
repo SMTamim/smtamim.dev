@@ -6,8 +6,8 @@ import { TBlog } from "../types";
 import { revalidateTag } from "next/cache";
 import { prisma } from "@/utils/prisma";
 import { blogSchema } from "@/lib/schemas/blog.schema";
-import { BlogUpdateInputSchema } from "../../../generated/zod";
 import { BlogStatus } from "../../../generated/prisma";
+import { BlogUpdateInputSchema } from "../../../generated/zod";
 
 export const createBlog = async (blog: TBlog) => {
   const session = await auth();

@@ -30,10 +30,6 @@ export default function BlogSection() {
         fetchBlogs();
     }, []);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <motion.section
             id="blog"
