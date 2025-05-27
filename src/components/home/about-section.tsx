@@ -16,17 +16,13 @@ export default function AboutSection() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
                     <p className="text-lg mb-4">
-                        {`I'm a passionate Full Stack Developer with 5 years of experience
-                        building web applications. I specialize in JavaScript technologies
-                        across the whole stack.`}
+                        {`Experienced web developer with 6+ years in custom solutions for business needs, skilled in database design, WordPress, Laravel, Python, PHP, HTML, JavaScript, React, FastAPI, Flask, and Flutter.`}
                     </p>
                     <p className="text-lg mb-4">
-                        My approach combines technical expertise with creative problem-solving
-                        to deliver high-quality, user-friendly applications.
+                        {` I deliver high-quality, tailored projects that boost efficiency and user engagement, ensuring your site or app is a valuable asset.`}
                     </p>
                     <p className="text-lg">
-                        {`I'm always eager to learn and explore new technologies, and I'm
-                        committed to staying up-to-date with industry trends.`}
+                        {`Let’s discuss how my expertise can support your goals—reach out for a consultation and see the difference expert development can make!`}
                     </p>
                 </div>
                 <Card>
@@ -38,13 +34,13 @@ export default function AboutSection() {
                             <div>
                                 <h3 className="font-medium">Master of Computer Science</h3>
                                 <p className="text-muted-foreground">
-                                    Stanford University • 2018 - 2020
+                                    Khulna University • 2025 - Ongoing
                                 </p>
                             </div>
                             <div>
-                                <h3 className="font-medium">Bachelor of Software Engineering</h3>
+                                <h3 className="font-medium">Bachelor of Computer Science and Engineering</h3>
                                 <p className="text-muted-foreground">
-                                    MIT • 2014 - 2018
+                                    Northern University of Business and Technology, Khulna • 2019 - 2023
                                 </p>
                             </div>
                         </div>
