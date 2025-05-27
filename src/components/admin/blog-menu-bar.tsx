@@ -11,7 +11,7 @@ import {
     List,
     ListOrdered,
     Strikethrough,
-    Image,
+    Image as ImageIcon,
     Code,
 } from "lucide-react";
 import { Editor } from "@tiptap/react";
@@ -98,7 +98,7 @@ export default function MenuBar({ editor, onImageUpload }: MenuBarProps) {
             pressed: editor.isActive("codeBlock"),
         },
         {
-            icon: <Image className="size-4" />,
+            icon: <ImageIcon className="size-4" />,
             onClick: () => onImageUpload?.(),
             pressed: false,
         },

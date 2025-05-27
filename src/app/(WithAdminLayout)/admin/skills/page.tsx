@@ -60,7 +60,7 @@ export default function SkillsPage() {
         handleSubmit: handleSkillSubmit,
         reset: resetSkillForm,
         setValue: setSkillValue,
-        watch: watchSkill,
+        // watch: watchSkill,
         formState: { errors: skillErrors }
     } = useForm<SkillFormValues>({
         resolver: zodResolver(skillFormSchema),
@@ -297,7 +297,7 @@ export default function SkillsPage() {
         setCategoryImagePreview(null);
     };
 
-    const currentProficiency = watchSkill("proficiency");
+    // const currentProficiency = watchSkill("proficiency");
 
     if (loading) {
         return (

@@ -47,7 +47,9 @@ export default function ProjectsTable() {
                 fetchProjects();
             }
         } catch (err) {
-            toast.error("Failed to update project status");
+            if (err instanceof Error) {
+                toast.error(err.message || "Failed to update project status");
+            }
         }
     };
 

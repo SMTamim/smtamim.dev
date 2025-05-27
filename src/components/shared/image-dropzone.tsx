@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
+import Image from "next/image";
 
 type Props = {
     value: File | string | null;
@@ -29,10 +30,12 @@ export default function ImageDropzone({ value, onChange }: Props) {
         >
             <input {...getInputProps()} />
             {value ? (
-                <img
+                <Image
                     src={typeof value === "string" ? value : URL.createObjectURL(value)}
                     alt="preview"
                     className="h-full object-contain"
+                    height={100}
+                    width={100}
                 />
             ) : (
                 <p>{isDragActive ? "Drop the image here..." : "Drag & drop or click to upload"}</p>

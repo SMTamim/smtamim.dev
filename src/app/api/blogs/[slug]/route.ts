@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
 // getting blogs
-export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
-  const slug = params.slug;
+export async function GET(req: NextRequest, { params }: PageProps) {
+  const { slug } = await params;
   const blog = await prisma.blog.findUnique({
     where: {
       slug
