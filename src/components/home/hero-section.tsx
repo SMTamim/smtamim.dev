@@ -26,10 +26,10 @@ export default function HeroSection() {
                     </p>
                     <div className="flex gap-4 justify-center">
                         <Button asChild>
-                            <Link href="/contact">Contact Me</Link>
+                            <Link href="/#contact">Contact Me</Link>
                         </Button>
                         <Button variant="outline" asChild>
-                            <Link href="/resume.pdf" download>
+                            <Link href="/resumes/resume.pdf" download>
                                 <Download className="mr-2 h-4 w-4" />
                                 Download Resume
                             </Link>

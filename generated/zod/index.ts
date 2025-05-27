@@ -30,7 +30,7 @@ export const SkillCategoryScalarFieldEnumSchema = z.enum(['sCatId','name','icon'
 
 export const SkillScalarFieldEnumSchema = z.enum(['sId','sCategoryId','name','proficiency','icon','type','deletedAt','createdAt','updatedAt']);
 
-export const WorkExperienceScalarFieldEnumSchema = z.enum(['wId','companyName','companyWebsite','startDate','endDate','onGoing','responsibilities']);
+export const WorkExperienceScalarFieldEnumSchema = z.enum(['wId','company','companyWebsite','position','startDate','endDate','onGoing','responsibilities','deletedAt','createdAt','updatedAt']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -220,12 +220,16 @@ export type Skill = z.infer<typeof SkillSchema>
 
 export const WorkExperienceSchema = z.object({
   wId: z.string().cuid(),
-  companyName: z.string(),
+  company: z.string(),
   companyWebsite: z.string(),
+  position: z.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().nullable(),
   onGoing: z.boolean(),
   responsibilities: z.string().array(),
+  deletedAt: z.coerce.date().nullable(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 })
 
 export type WorkExperience = z.infer<typeof WorkExperienceSchema>
@@ -471,12 +475,16 @@ export const SkillSelectSchema: z.ZodType<Prisma.SkillSelect> = z.object({
 
 export const WorkExperienceSelectSchema: z.ZodType<Prisma.WorkExperienceSelect> = z.object({
   wId: z.boolean().optional(),
-  companyName: z.boolean().optional(),
+  company: z.boolean().optional(),
   companyWebsite: z.boolean().optional(),
+  position: z.boolean().optional(),
   startDate: z.boolean().optional(),
   endDate: z.boolean().optional(),
   onGoing: z.boolean().optional(),
   responsibilities: z.boolean().optional(),
+  deletedAt: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
+  updatedAt: z.boolean().optional(),
 }).strict()
 
 
@@ -1249,22 +1257,30 @@ export const WorkExperienceWhereInputSchema: z.ZodType<Prisma.WorkExperienceWher
   OR: z.lazy(() => WorkExperienceWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => WorkExperienceWhereInputSchema),z.lazy(() => WorkExperienceWhereInputSchema).array() ]).optional(),
   wId: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  companyName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  company: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   companyWebsite: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  position: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   onGoing: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
-  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional()
+  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
 export const WorkExperienceOrderByWithRelationInputSchema: z.ZodType<Prisma.WorkExperienceOrderByWithRelationInput> = z.object({
   wId: z.lazy(() => SortOrderSchema).optional(),
-  companyName: z.lazy(() => SortOrderSchema).optional(),
+  company: z.lazy(() => SortOrderSchema).optional(),
   companyWebsite: z.lazy(() => SortOrderSchema).optional(),
+  position: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   onGoing: z.lazy(() => SortOrderSchema).optional(),
-  responsibilities: z.lazy(() => SortOrderSchema).optional()
+  responsibilities: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkExperienceWhereUniqueInputSchema: z.ZodType<Prisma.WorkExperienceWhereUniqueInput> = z.object({
@@ -1275,22 +1291,30 @@ export const WorkExperienceWhereUniqueInputSchema: z.ZodType<Prisma.WorkExperien
   AND: z.union([ z.lazy(() => WorkExperienceWhereInputSchema),z.lazy(() => WorkExperienceWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => WorkExperienceWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => WorkExperienceWhereInputSchema),z.lazy(() => WorkExperienceWhereInputSchema).array() ]).optional(),
-  companyName: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  company: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   companyWebsite: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  position: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   onGoing: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
-  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional()
+  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
 }).strict());
 
 export const WorkExperienceOrderByWithAggregationInputSchema: z.ZodType<Prisma.WorkExperienceOrderByWithAggregationInput> = z.object({
   wId: z.lazy(() => SortOrderSchema).optional(),
-  companyName: z.lazy(() => SortOrderSchema).optional(),
+  company: z.lazy(() => SortOrderSchema).optional(),
   companyWebsite: z.lazy(() => SortOrderSchema).optional(),
+  position: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   onGoing: z.lazy(() => SortOrderSchema).optional(),
   responsibilities: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => WorkExperienceCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => WorkExperienceMaxOrderByAggregateInputSchema).optional(),
   _min: z.lazy(() => WorkExperienceMinOrderByAggregateInputSchema).optional()
@@ -1301,12 +1325,16 @@ export const WorkExperienceScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
   OR: z.lazy(() => WorkExperienceScalarWhereWithAggregatesInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => WorkExperienceScalarWhereWithAggregatesInputSchema),z.lazy(() => WorkExperienceScalarWhereWithAggregatesInputSchema).array() ]).optional(),
   wId: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
-  companyName: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  company: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   companyWebsite: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
+  position: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   startDate: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   endDate: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
   onGoing: z.union([ z.lazy(() => BoolWithAggregatesFilterSchema),z.boolean() ]).optional(),
-  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional()
+  responsibilities: z.lazy(() => StringNullableListFilterSchema).optional(),
+  deletedAt: z.union([ z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),z.coerce.date() ]).optional().nullable(),
+  createdAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  updatedAt: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
 }).strict();
 
 export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object({
@@ -2068,72 +2096,100 @@ export const SkillUncheckedUpdateManyInputSchema: z.ZodType<Prisma.SkillUnchecke
 
 export const WorkExperienceCreateInputSchema: z.ZodType<Prisma.WorkExperienceCreateInput> = z.object({
   wId: z.string().cuid().optional(),
-  companyName: z.string(),
+  company: z.string(),
   companyWebsite: z.string(),
+  position: z.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional().nullable(),
   onGoing: z.boolean().optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceCreateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
 }).strict();
 
 export const WorkExperienceUncheckedCreateInputSchema: z.ZodType<Prisma.WorkExperienceUncheckedCreateInput> = z.object({
   wId: z.string().cuid().optional(),
-  companyName: z.string(),
+  company: z.string(),
   companyWebsite: z.string(),
+  position: z.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional().nullable(),
   onGoing: z.boolean().optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceCreateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
 }).strict();
 
 export const WorkExperienceUpdateInputSchema: z.ZodType<Prisma.WorkExperienceUpdateInput> = z.object({
   wId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  companyName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  company: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   companyWebsite: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  position: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   onGoing: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceUpdateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const WorkExperienceUncheckedUpdateInputSchema: z.ZodType<Prisma.WorkExperienceUncheckedUpdateInput> = z.object({
   wId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  companyName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  company: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   companyWebsite: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  position: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   onGoing: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceUpdateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const WorkExperienceCreateManyInputSchema: z.ZodType<Prisma.WorkExperienceCreateManyInput> = z.object({
   wId: z.string().cuid().optional(),
-  companyName: z.string(),
+  company: z.string(),
   companyWebsite: z.string(),
+  position: z.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional().nullable(),
   onGoing: z.boolean().optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceCreateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.coerce.date().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
+  updatedAt: z.coerce.date().optional()
 }).strict();
 
 export const WorkExperienceUpdateManyMutationInputSchema: z.ZodType<Prisma.WorkExperienceUpdateManyMutationInput> = z.object({
   wId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  companyName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  company: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   companyWebsite: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  position: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   onGoing: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceUpdateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const WorkExperienceUncheckedUpdateManyInputSchema: z.ZodType<Prisma.WorkExperienceUncheckedUpdateManyInput> = z.object({
   wId: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-  companyName: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  company: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   companyWebsite: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  position: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   startDate: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   endDate: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   onGoing: z.union([ z.boolean(),z.lazy(() => BoolFieldUpdateOperationsInputSchema) ]).optional(),
   responsibilities: z.union([ z.lazy(() => WorkExperienceUpdateresponsibilitiesInputSchema),z.string().array() ]).optional(),
+  deletedAt: z.union([ z.coerce.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
 export const StringFilterSchema: z.ZodType<Prisma.StringFilter> = z.object({
@@ -2802,30 +2858,42 @@ export const EnumSkillTypeWithAggregatesFilterSchema: z.ZodType<Prisma.EnumSkill
 
 export const WorkExperienceCountOrderByAggregateInputSchema: z.ZodType<Prisma.WorkExperienceCountOrderByAggregateInput> = z.object({
   wId: z.lazy(() => SortOrderSchema).optional(),
-  companyName: z.lazy(() => SortOrderSchema).optional(),
+  company: z.lazy(() => SortOrderSchema).optional(),
   companyWebsite: z.lazy(() => SortOrderSchema).optional(),
+  position: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
   onGoing: z.lazy(() => SortOrderSchema).optional(),
-  responsibilities: z.lazy(() => SortOrderSchema).optional()
+  responsibilities: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkExperienceMaxOrderByAggregateInputSchema: z.ZodType<Prisma.WorkExperienceMaxOrderByAggregateInput> = z.object({
   wId: z.lazy(() => SortOrderSchema).optional(),
-  companyName: z.lazy(() => SortOrderSchema).optional(),
+  company: z.lazy(() => SortOrderSchema).optional(),
   companyWebsite: z.lazy(() => SortOrderSchema).optional(),
+  position: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
-  onGoing: z.lazy(() => SortOrderSchema).optional()
+  onGoing: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const WorkExperienceMinOrderByAggregateInputSchema: z.ZodType<Prisma.WorkExperienceMinOrderByAggregateInput> = z.object({
   wId: z.lazy(() => SortOrderSchema).optional(),
-  companyName: z.lazy(() => SortOrderSchema).optional(),
+  company: z.lazy(() => SortOrderSchema).optional(),
   companyWebsite: z.lazy(() => SortOrderSchema).optional(),
+  position: z.lazy(() => SortOrderSchema).optional(),
   startDate: z.lazy(() => SortOrderSchema).optional(),
   endDate: z.lazy(() => SortOrderSchema).optional(),
-  onGoing: z.lazy(() => SortOrderSchema).optional()
+  onGoing: z.lazy(() => SortOrderSchema).optional(),
+  deletedAt: z.lazy(() => SortOrderSchema).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
+  updatedAt: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export const AccountCreateNestedManyWithoutUserInputSchema: z.ZodType<Prisma.AccountCreateNestedManyWithoutUserInput> = z.object({

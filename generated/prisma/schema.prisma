@@ -181,12 +181,16 @@ enum SkillType {
 
 model WorkExperience {
   wId              String    @id @default(cuid())
-  companyName      String    @map("company_name")
+  company          String    @map("company_name")
   companyWebsite   String    @map("company_website")
+  position         String
   startDate        DateTime
   endDate          DateTime?
   onGoing          Boolean   @default(false)
   responsibilities String[]
+  deletedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   @@map("work_experience")
 }

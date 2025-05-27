@@ -11916,60 +11916,84 @@ export namespace Prisma {
 
   export type WorkExperienceMinAggregateOutputType = {
     wId: string | null
-    companyName: string | null
+    company: string | null
     companyWebsite: string | null
+    position: string | null
     startDate: Date | null
     endDate: Date | null
     onGoing: boolean | null
+    deletedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type WorkExperienceMaxAggregateOutputType = {
     wId: string | null
-    companyName: string | null
+    company: string | null
     companyWebsite: string | null
+    position: string | null
     startDate: Date | null
     endDate: Date | null
     onGoing: boolean | null
+    deletedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type WorkExperienceCountAggregateOutputType = {
     wId: number
-    companyName: number
+    company: number
     companyWebsite: number
+    position: number
     startDate: number
     endDate: number
     onGoing: number
     responsibilities: number
+    deletedAt: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
 
   export type WorkExperienceMinAggregateInputType = {
     wId?: true
-    companyName?: true
+    company?: true
     companyWebsite?: true
+    position?: true
     startDate?: true
     endDate?: true
     onGoing?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type WorkExperienceMaxAggregateInputType = {
     wId?: true
-    companyName?: true
+    company?: true
     companyWebsite?: true
+    position?: true
     startDate?: true
     endDate?: true
     onGoing?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type WorkExperienceCountAggregateInputType = {
     wId?: true
-    companyName?: true
+    company?: true
     companyWebsite?: true
+    position?: true
     startDate?: true
     endDate?: true
     onGoing?: true
     responsibilities?: true
+    deletedAt?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -12047,12 +12071,16 @@ export namespace Prisma {
 
   export type WorkExperienceGroupByOutputType = {
     wId: string
-    companyName: string
+    company: string
     companyWebsite: string
+    position: string
     startDate: Date
     endDate: Date | null
     onGoing: boolean
     responsibilities: string[]
+    deletedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
     _count: WorkExperienceCountAggregateOutputType | null
     _min: WorkExperienceMinAggregateOutputType | null
     _max: WorkExperienceMaxAggregateOutputType | null
@@ -12074,57 +12102,77 @@ export namespace Prisma {
 
   export type WorkExperienceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     wId?: boolean
-    companyName?: boolean
+    company?: boolean
     companyWebsite?: boolean
+    position?: boolean
     startDate?: boolean
     endDate?: boolean
     onGoing?: boolean
     responsibilities?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["workExperience"]>
 
   export type WorkExperienceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     wId?: boolean
-    companyName?: boolean
+    company?: boolean
     companyWebsite?: boolean
+    position?: boolean
     startDate?: boolean
     endDate?: boolean
     onGoing?: boolean
     responsibilities?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["workExperience"]>
 
   export type WorkExperienceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     wId?: boolean
-    companyName?: boolean
+    company?: boolean
     companyWebsite?: boolean
+    position?: boolean
     startDate?: boolean
     endDate?: boolean
     onGoing?: boolean
     responsibilities?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }, ExtArgs["result"]["workExperience"]>
 
   export type WorkExperienceSelectScalar = {
     wId?: boolean
-    companyName?: boolean
+    company?: boolean
     companyWebsite?: boolean
+    position?: boolean
     startDate?: boolean
     endDate?: boolean
     onGoing?: boolean
     responsibilities?: boolean
+    deletedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"wId" | "companyName" | "companyWebsite" | "startDate" | "endDate" | "onGoing" | "responsibilities", ExtArgs["result"]["workExperience"]>
+  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"wId" | "company" | "companyWebsite" | "position" | "startDate" | "endDate" | "onGoing" | "responsibilities" | "deletedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["workExperience"]>
 
   export type $WorkExperiencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "WorkExperience"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       wId: string
-      companyName: string
+      company: string
       companyWebsite: string
+      position: string
       startDate: Date
       endDate: Date | null
       onGoing: boolean
       responsibilities: string[]
+      deletedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["workExperience"]>
     composites: {}
   }
@@ -12549,12 +12597,16 @@ export namespace Prisma {
    */
   interface WorkExperienceFieldRefs {
     readonly wId: FieldRef<"WorkExperience", 'String'>
-    readonly companyName: FieldRef<"WorkExperience", 'String'>
+    readonly company: FieldRef<"WorkExperience", 'String'>
     readonly companyWebsite: FieldRef<"WorkExperience", 'String'>
+    readonly position: FieldRef<"WorkExperience", 'String'>
     readonly startDate: FieldRef<"WorkExperience", 'DateTime'>
     readonly endDate: FieldRef<"WorkExperience", 'DateTime'>
     readonly onGoing: FieldRef<"WorkExperience", 'Boolean'>
     readonly responsibilities: FieldRef<"WorkExperience", 'String[]'>
+    readonly deletedAt: FieldRef<"WorkExperience", 'DateTime'>
+    readonly createdAt: FieldRef<"WorkExperience", 'DateTime'>
+    readonly updatedAt: FieldRef<"WorkExperience", 'DateTime'>
   }
     
 
@@ -13070,12 +13122,16 @@ export namespace Prisma {
 
   export const WorkExperienceScalarFieldEnum: {
     wId: 'wId',
-    companyName: 'companyName',
+    company: 'company',
     companyWebsite: 'companyWebsite',
+    position: 'position',
     startDate: 'startDate',
     endDate: 'endDate',
     onGoing: 'onGoing',
-    responsibilities: 'responsibilities'
+    responsibilities: 'responsibilities',
+    deletedAt: 'deletedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type WorkExperienceScalarFieldEnum = (typeof WorkExperienceScalarFieldEnum)[keyof typeof WorkExperienceScalarFieldEnum]
@@ -13902,22 +13958,30 @@ export namespace Prisma {
     OR?: WorkExperienceWhereInput[]
     NOT?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
     wId?: StringFilter<"WorkExperience"> | string
-    companyName?: StringFilter<"WorkExperience"> | string
+    company?: StringFilter<"WorkExperience"> | string
     companyWebsite?: StringFilter<"WorkExperience"> | string
+    position?: StringFilter<"WorkExperience"> | string
     startDate?: DateTimeFilter<"WorkExperience"> | Date | string
     endDate?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
     onGoing?: BoolFilter<"WorkExperience"> | boolean
     responsibilities?: StringNullableListFilter<"WorkExperience">
+    deletedAt?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
+    createdAt?: DateTimeFilter<"WorkExperience"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
   }
 
   export type WorkExperienceOrderByWithRelationInput = {
     wId?: SortOrder
-    companyName?: SortOrder
+    company?: SortOrder
     companyWebsite?: SortOrder
+    position?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrderInput | SortOrder
     onGoing?: SortOrder
     responsibilities?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WorkExperienceWhereUniqueInput = Prisma.AtLeast<{
@@ -13925,22 +13989,30 @@ export namespace Prisma {
     AND?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
     OR?: WorkExperienceWhereInput[]
     NOT?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
-    companyName?: StringFilter<"WorkExperience"> | string
+    company?: StringFilter<"WorkExperience"> | string
     companyWebsite?: StringFilter<"WorkExperience"> | string
+    position?: StringFilter<"WorkExperience"> | string
     startDate?: DateTimeFilter<"WorkExperience"> | Date | string
     endDate?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
     onGoing?: BoolFilter<"WorkExperience"> | boolean
     responsibilities?: StringNullableListFilter<"WorkExperience">
+    deletedAt?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
+    createdAt?: DateTimeFilter<"WorkExperience"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkExperience"> | Date | string
   }, "wId">
 
   export type WorkExperienceOrderByWithAggregationInput = {
     wId?: SortOrder
-    companyName?: SortOrder
+    company?: SortOrder
     companyWebsite?: SortOrder
+    position?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrderInput | SortOrder
     onGoing?: SortOrder
     responsibilities?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: WorkExperienceCountOrderByAggregateInput
     _max?: WorkExperienceMaxOrderByAggregateInput
     _min?: WorkExperienceMinOrderByAggregateInput
@@ -13951,12 +14023,16 @@ export namespace Prisma {
     OR?: WorkExperienceScalarWhereWithAggregatesInput[]
     NOT?: WorkExperienceScalarWhereWithAggregatesInput | WorkExperienceScalarWhereWithAggregatesInput[]
     wId?: StringWithAggregatesFilter<"WorkExperience"> | string
-    companyName?: StringWithAggregatesFilter<"WorkExperience"> | string
+    company?: StringWithAggregatesFilter<"WorkExperience"> | string
     companyWebsite?: StringWithAggregatesFilter<"WorkExperience"> | string
+    position?: StringWithAggregatesFilter<"WorkExperience"> | string
     startDate?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
     endDate?: DateTimeNullableWithAggregatesFilter<"WorkExperience"> | Date | string | null
     onGoing?: BoolWithAggregatesFilter<"WorkExperience"> | boolean
     responsibilities?: StringNullableListFilter<"WorkExperience">
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"WorkExperience"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -14718,72 +14794,100 @@ export namespace Prisma {
 
   export type WorkExperienceCreateInput = {
     wId?: string
-    companyName: string
+    company: string
     companyWebsite: string
+    position: string
     startDate: Date | string
     endDate?: Date | string | null
     onGoing?: boolean
     responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WorkExperienceUncheckedCreateInput = {
     wId?: string
-    companyName: string
+    company: string
     companyWebsite: string
+    position: string
     startDate: Date | string
     endDate?: Date | string | null
     onGoing?: boolean
     responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WorkExperienceUpdateInput = {
     wId?: StringFieldUpdateOperationsInput | string
-    companyName?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
     companyWebsite?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     onGoing?: BoolFieldUpdateOperationsInput | boolean
     responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkExperienceUncheckedUpdateInput = {
     wId?: StringFieldUpdateOperationsInput | string
-    companyName?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
     companyWebsite?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     onGoing?: BoolFieldUpdateOperationsInput | boolean
     responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkExperienceCreateManyInput = {
     wId?: string
-    companyName: string
+    company: string
     companyWebsite: string
+    position: string
     startDate: Date | string
     endDate?: Date | string | null
     onGoing?: boolean
     responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+    deletedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WorkExperienceUpdateManyMutationInput = {
     wId?: StringFieldUpdateOperationsInput | string
-    companyName?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
     companyWebsite?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     onGoing?: BoolFieldUpdateOperationsInput | boolean
     responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WorkExperienceUncheckedUpdateManyInput = {
     wId?: StringFieldUpdateOperationsInput | string
-    companyName?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
     companyWebsite?: StringFieldUpdateOperationsInput | string
+    position?: StringFieldUpdateOperationsInput | string
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     onGoing?: BoolFieldUpdateOperationsInput | boolean
     responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -15452,30 +15556,42 @@ export namespace Prisma {
 
   export type WorkExperienceCountOrderByAggregateInput = {
     wId?: SortOrder
-    companyName?: SortOrder
+    company?: SortOrder
     companyWebsite?: SortOrder
+    position?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     onGoing?: SortOrder
     responsibilities?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WorkExperienceMaxOrderByAggregateInput = {
     wId?: SortOrder
-    companyName?: SortOrder
+    company?: SortOrder
     companyWebsite?: SortOrder
+    position?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     onGoing?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type WorkExperienceMinOrderByAggregateInput = {
     wId?: SortOrder
-    companyName?: SortOrder
+    company?: SortOrder
     companyWebsite?: SortOrder
+    position?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     onGoing?: SortOrder
+    deletedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type AccountCreateNestedManyWithoutUserInput = {

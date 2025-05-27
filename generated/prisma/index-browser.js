@@ -228,12 +228,16 @@ exports.Prisma.SkillScalarFieldEnum = {
 
 exports.Prisma.WorkExperienceScalarFieldEnum = {
   wId: 'wId',
-  companyName: 'companyName',
+  company: 'company',
   companyWebsite: 'companyWebsite',
+  position: 'position',
   startDate: 'startDate',
   endDate: 'endDate',
   onGoing: 'onGoing',
-  responsibilities: 'responsibilities'
+  responsibilities: 'responsibilities',
+  deletedAt: 'deletedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
