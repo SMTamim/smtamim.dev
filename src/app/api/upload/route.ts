@@ -4,7 +4,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { auth } from "@/utils/auth";
 
-const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH ?? "", "public/uploads");
+const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH ?? "", "uploads");
 const PUBLIC_URL_PREFIX = "/uploads";
 
 function getSafeFileName(originalName: string): string {
