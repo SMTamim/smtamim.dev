@@ -25,7 +25,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
                 <CardContent className="p-0">
                     <div className="relative aspect-video w-full overflow-hidden rounded-t-none border-t">
                         <Image
-                            src={`${config.api_url}${blog.featuredImage}`}
+                            src={`${config.public_url}${blog.featuredImage}`}
                             alt={blog.title}
                             fill
                             className="object-cover"

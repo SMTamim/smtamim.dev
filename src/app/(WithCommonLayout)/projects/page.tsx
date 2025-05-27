@@ -91,7 +91,7 @@ function ProjectCards() {
                                 <CardContent className="p-0">
                                     <div className="relative aspect-video w-full overflow-hidden rounded-t-none border-t">
                                         <Image
-                                            src={`${config.api_url}${project.images[0]}`}
+                                            src={`${config.public_url}${project.images[0]}`}
                                             alt={project.title}
                                             fill
                                             className="object-cover"
