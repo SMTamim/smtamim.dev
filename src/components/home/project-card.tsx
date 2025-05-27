@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Project } from "../../../generated/zod";
 import Image from "next/image";
 import { ArrowUpRight, Github } from "lucide-react";
+import config from "@/config";
 
 interface ProjectCardProps {
     project: Project;
@@ -37,7 +38,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 <CardContent className="p-0">
                     <div className="relative aspect-video w-full overflow-hidden rounded-t-none border-t">
                         <Image
-                            src={project.images[0]}
+                            src={`${config.api_url}${project.images[0]}`}
                             alt={project.title}
                             fill
                             className="object-cover"

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getAllProjects } from "@/lib/services/project.actions";
 import { toast } from "sonner";
 import ProjectCardSkeleton from "@/components/home/project-card-loader";
+import config from "@/config";
 
 
 export default function AdminProjectsPage() {
@@ -90,7 +91,7 @@ function ProjectCards() {
                                 <CardContent className="p-0">
                                     <div className="relative aspect-video w-full overflow-hidden rounded-t-none border-t">
                                         <Image
-                                            src={project.images[0]}
+                                            src={`${config.api_url}${project.images[0]}`}
                                             alt={project.title}
                                             fill
                                             className="object-cover"

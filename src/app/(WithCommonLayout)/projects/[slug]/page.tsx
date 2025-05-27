@@ -10,6 +10,7 @@ import { Project } from "../../../../../generated/zod";
 import { useEffect, useState } from "react";
 import { getSingleProject } from "@/lib/services/project.actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import config from "@/config";
 
 export default function ProjectShowcase() {
     const { slug } = useParams();
@@ -87,7 +88,7 @@ export default function ProjectShowcase() {
                     {project.images.length > 0 && (
                         <div className="rounded-xl border bg-muted overflow-hidden mb-12">
                             <Image
-                                src={project.images[0]}
+                                src={`${config.api_url}${project.images[0]}`}
                                 alt={project.title}
                                 width={1600}
                                 height={900}
@@ -160,7 +161,7 @@ export default function ProjectShowcase() {
                                         {project.images.slice(1).map((image, i) => (
                                             <div key={i} className="rounded-md overflow-hidden border">
                                                 <Image
-                                                    src={image}
+                                                    src={`${config.api_url}${image}`}
                                                     alt={`${project.title} screenshot ${i + 1}`}
                                                     width={400}
                                                     height={300}
