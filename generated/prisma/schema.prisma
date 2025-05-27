@@ -146,7 +146,7 @@ enum ProjectStatus {
 }
 
 model SkillCategory {
-  sCatId    String    @unique @default(cuid()) @map("s_cat_id")
+  sCatId    String    @id @default(cuid()) @map("s_cat_id")
   name      String
   icon      String
   deletedAt DateTime?
@@ -159,7 +159,7 @@ model SkillCategory {
 }
 
 model Skill {
-  sId           String         @unique @default(cuid()) @map("s_id")
+  sId           String         @id @default(cuid()) @map("s_id")
   sCategoryId   String         @map("s_category_id")
   name          String
   proficiency   Int
@@ -177,4 +177,16 @@ model Skill {
 enum SkillType {
   TECHNICAL_SKILL
   SOFT_SKILL
+}
+
+model WorkExperience {
+  wId              String    @id @default(cuid())
+  companyName      String    @map("company_name")
+  companyWebsite   String    @map("company_website")
+  startDate        DateTime
+  endDate          DateTime?
+  onGoing          Boolean   @default(false)
+  responsibilities String[]
+
+  @@map("work_experience")
 }

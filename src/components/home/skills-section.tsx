@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getAllSkills, getAllSkillCategories } from "@/lib/services/skill.actions";
 import { Skill, SkillCategory } from "../../../generated/zod";
+import { NoDataFound } from "../shared/no-data-found";
 
 const getProficiencyLabel = (level: number) => {
     if (level > 80) return 'Expert';
@@ -99,7 +100,10 @@ export default function SkillsSection() {
                                     ))}
                                 </div>
                             ) : categories.length === 0 ? (
-                                <p className="text-muted-foreground text-center py-8">No skill categories found</p>
+                                <NoDataFound
+                                    title="No skill categories found"
+                                    description="There's no skill categories to display here at the moment."
+                                />
                             ) : (
                                 categories.map((category) => {
                                     const categorySkills = skills.filter(

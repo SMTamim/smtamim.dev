@@ -8,6 +8,8 @@ import { Project } from "../../../generated/zod";
 import { getAllProjects } from "@/lib/services/project.actions";
 import { toast } from "sonner";
 import ProjectCardSkeleton from "./project-card-loader";
+import { NoDataFound } from "../shared/no-data-found";
+import { Card } from "../ui/card";
 
 export default function FeaturedProjectsSection() {
 
@@ -49,7 +51,7 @@ export default function FeaturedProjectsSection() {
                 Featured Projects
             </motion.h2>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className={`grid ${projects.length ? "md:grid-cols-2 lg:grid-cols-3 gap-6" : "grid-cols-1"}`}>
 
                 {
                     isLoading ? (
@@ -61,14 +63,21 @@ export default function FeaturedProjectsSection() {
 
                     )
                         :
-                        projects.slice(0, 3).map((project, index) => (
+                        projects.length ? projects.slice(0, 3).map((project, index) => (
                             <motion.div
                                 key={project.pId}
                                 variants={fadeIn("up", 0.2 + index * 0.1)}
                             >
                                 <ProjectCard project={project} />
                             </motion.div>
-                        ))
+                        )) : (
+                            <Card>
+                                <NoDataFound
+                                    title="No featured projects found"
+                                    description="There's no featured projects to display here at the moment."
+                                />
+                            </Card>
+                        )
                 }
 
             </div>

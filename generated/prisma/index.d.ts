@@ -58,6 +58,11 @@ export type SkillCategory = $Result.DefaultSelection<Prisma.$SkillCategoryPayloa
  * 
  */
 export type Skill = $Result.DefaultSelection<Prisma.$SkillPayload>
+/**
+ * Model WorkExperience
+ * 
+ */
+export type WorkExperience = $Result.DefaultSelection<Prisma.$WorkExperiencePayload>
 
 /**
  * Enums
@@ -316,6 +321,16 @@ export class PrismaClient<
     * ```
     */
   get skill(): Prisma.SkillDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.workExperience`: Exposes CRUD operations for the **WorkExperience** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WorkExperiences
+    * const workExperiences = await prisma.workExperience.findMany()
+    * ```
+    */
+  get workExperience(): Prisma.WorkExperienceDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -764,7 +779,8 @@ export namespace Prisma {
     Blog: 'Blog',
     Project: 'Project',
     SkillCategory: 'SkillCategory',
-    Skill: 'Skill'
+    Skill: 'Skill',
+    WorkExperience: 'WorkExperience'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -783,7 +799,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "blog" | "project" | "skillCategory" | "skill"
+      modelProps: "user" | "account" | "session" | "verificationToken" | "authenticator" | "blog" | "project" | "skillCategory" | "skill" | "workExperience"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1453,6 +1469,80 @@ export namespace Prisma {
           }
         }
       }
+      WorkExperience: {
+        payload: Prisma.$WorkExperiencePayload<ExtArgs>
+        fields: Prisma.WorkExperienceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WorkExperienceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WorkExperienceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          findFirst: {
+            args: Prisma.WorkExperienceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WorkExperienceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          findMany: {
+            args: Prisma.WorkExperienceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>[]
+          }
+          create: {
+            args: Prisma.WorkExperienceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          createMany: {
+            args: Prisma.WorkExperienceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WorkExperienceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>[]
+          }
+          delete: {
+            args: Prisma.WorkExperienceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          update: {
+            args: Prisma.WorkExperienceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          deleteMany: {
+            args: Prisma.WorkExperienceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WorkExperienceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WorkExperienceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>[]
+          }
+          upsert: {
+            args: Prisma.WorkExperienceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkExperiencePayload>
+          }
+          aggregate: {
+            args: Prisma.WorkExperienceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWorkExperience>
+          }
+          groupBy: {
+            args: Prisma.WorkExperienceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WorkExperienceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WorkExperienceCountArgs<ExtArgs>
+            result: $Utils.Optional<WorkExperienceCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1546,6 +1636,7 @@ export namespace Prisma {
     project?: ProjectOmit
     skillCategory?: SkillCategoryOmit
     skill?: SkillOmit
+    workExperience?: WorkExperienceOmit
   }
 
   /* Types for Logging */
@@ -11814,6 +11905,1023 @@ export namespace Prisma {
 
 
   /**
+   * Model WorkExperience
+   */
+
+  export type AggregateWorkExperience = {
+    _count: WorkExperienceCountAggregateOutputType | null
+    _min: WorkExperienceMinAggregateOutputType | null
+    _max: WorkExperienceMaxAggregateOutputType | null
+  }
+
+  export type WorkExperienceMinAggregateOutputType = {
+    wId: string | null
+    companyName: string | null
+    companyWebsite: string | null
+    startDate: Date | null
+    endDate: Date | null
+    onGoing: boolean | null
+  }
+
+  export type WorkExperienceMaxAggregateOutputType = {
+    wId: string | null
+    companyName: string | null
+    companyWebsite: string | null
+    startDate: Date | null
+    endDate: Date | null
+    onGoing: boolean | null
+  }
+
+  export type WorkExperienceCountAggregateOutputType = {
+    wId: number
+    companyName: number
+    companyWebsite: number
+    startDate: number
+    endDate: number
+    onGoing: number
+    responsibilities: number
+    _all: number
+  }
+
+
+  export type WorkExperienceMinAggregateInputType = {
+    wId?: true
+    companyName?: true
+    companyWebsite?: true
+    startDate?: true
+    endDate?: true
+    onGoing?: true
+  }
+
+  export type WorkExperienceMaxAggregateInputType = {
+    wId?: true
+    companyName?: true
+    companyWebsite?: true
+    startDate?: true
+    endDate?: true
+    onGoing?: true
+  }
+
+  export type WorkExperienceCountAggregateInputType = {
+    wId?: true
+    companyName?: true
+    companyWebsite?: true
+    startDate?: true
+    endDate?: true
+    onGoing?: true
+    responsibilities?: true
+    _all?: true
+  }
+
+  export type WorkExperienceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkExperience to aggregate.
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkExperiences to fetch.
+     */
+    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WorkExperienceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkExperiences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkExperiences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WorkExperiences
+    **/
+    _count?: true | WorkExperienceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WorkExperienceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WorkExperienceMaxAggregateInputType
+  }
+
+  export type GetWorkExperienceAggregateType<T extends WorkExperienceAggregateArgs> = {
+        [P in keyof T & keyof AggregateWorkExperience]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWorkExperience[P]>
+      : GetScalarType<T[P], AggregateWorkExperience[P]>
+  }
+
+
+
+
+  export type WorkExperienceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WorkExperienceWhereInput
+    orderBy?: WorkExperienceOrderByWithAggregationInput | WorkExperienceOrderByWithAggregationInput[]
+    by: WorkExperienceScalarFieldEnum[] | WorkExperienceScalarFieldEnum
+    having?: WorkExperienceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WorkExperienceCountAggregateInputType | true
+    _min?: WorkExperienceMinAggregateInputType
+    _max?: WorkExperienceMaxAggregateInputType
+  }
+
+  export type WorkExperienceGroupByOutputType = {
+    wId: string
+    companyName: string
+    companyWebsite: string
+    startDate: Date
+    endDate: Date | null
+    onGoing: boolean
+    responsibilities: string[]
+    _count: WorkExperienceCountAggregateOutputType | null
+    _min: WorkExperienceMinAggregateOutputType | null
+    _max: WorkExperienceMaxAggregateOutputType | null
+  }
+
+  type GetWorkExperienceGroupByPayload<T extends WorkExperienceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WorkExperienceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WorkExperienceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WorkExperienceGroupByOutputType[P]>
+            : GetScalarType<T[P], WorkExperienceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WorkExperienceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    wId?: boolean
+    companyName?: boolean
+    companyWebsite?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    onGoing?: boolean
+    responsibilities?: boolean
+  }, ExtArgs["result"]["workExperience"]>
+
+  export type WorkExperienceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    wId?: boolean
+    companyName?: boolean
+    companyWebsite?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    onGoing?: boolean
+    responsibilities?: boolean
+  }, ExtArgs["result"]["workExperience"]>
+
+  export type WorkExperienceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    wId?: boolean
+    companyName?: boolean
+    companyWebsite?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    onGoing?: boolean
+    responsibilities?: boolean
+  }, ExtArgs["result"]["workExperience"]>
+
+  export type WorkExperienceSelectScalar = {
+    wId?: boolean
+    companyName?: boolean
+    companyWebsite?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    onGoing?: boolean
+    responsibilities?: boolean
+  }
+
+  export type WorkExperienceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"wId" | "companyName" | "companyWebsite" | "startDate" | "endDate" | "onGoing" | "responsibilities", ExtArgs["result"]["workExperience"]>
+
+  export type $WorkExperiencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WorkExperience"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      wId: string
+      companyName: string
+      companyWebsite: string
+      startDate: Date
+      endDate: Date | null
+      onGoing: boolean
+      responsibilities: string[]
+    }, ExtArgs["result"]["workExperience"]>
+    composites: {}
+  }
+
+  type WorkExperienceGetPayload<S extends boolean | null | undefined | WorkExperienceDefaultArgs> = $Result.GetResult<Prisma.$WorkExperiencePayload, S>
+
+  type WorkExperienceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WorkExperienceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WorkExperienceCountAggregateInputType | true
+    }
+
+  export interface WorkExperienceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WorkExperience'], meta: { name: 'WorkExperience' } }
+    /**
+     * Find zero or one WorkExperience that matches the filter.
+     * @param {WorkExperienceFindUniqueArgs} args - Arguments to find a WorkExperience
+     * @example
+     * // Get one WorkExperience
+     * const workExperience = await prisma.workExperience.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WorkExperienceFindUniqueArgs>(args: SelectSubset<T, WorkExperienceFindUniqueArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WorkExperience that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WorkExperienceFindUniqueOrThrowArgs} args - Arguments to find a WorkExperience
+     * @example
+     * // Get one WorkExperience
+     * const workExperience = await prisma.workExperience.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WorkExperienceFindUniqueOrThrowArgs>(args: SelectSubset<T, WorkExperienceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkExperience that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceFindFirstArgs} args - Arguments to find a WorkExperience
+     * @example
+     * // Get one WorkExperience
+     * const workExperience = await prisma.workExperience.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WorkExperienceFindFirstArgs>(args?: SelectSubset<T, WorkExperienceFindFirstArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkExperience that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceFindFirstOrThrowArgs} args - Arguments to find a WorkExperience
+     * @example
+     * // Get one WorkExperience
+     * const workExperience = await prisma.workExperience.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WorkExperienceFindFirstOrThrowArgs>(args?: SelectSubset<T, WorkExperienceFindFirstOrThrowArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WorkExperiences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WorkExperiences
+     * const workExperiences = await prisma.workExperience.findMany()
+     * 
+     * // Get first 10 WorkExperiences
+     * const workExperiences = await prisma.workExperience.findMany({ take: 10 })
+     * 
+     * // Only select the `wId`
+     * const workExperienceWithWIdOnly = await prisma.workExperience.findMany({ select: { wId: true } })
+     * 
+     */
+    findMany<T extends WorkExperienceFindManyArgs>(args?: SelectSubset<T, WorkExperienceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WorkExperience.
+     * @param {WorkExperienceCreateArgs} args - Arguments to create a WorkExperience.
+     * @example
+     * // Create one WorkExperience
+     * const WorkExperience = await prisma.workExperience.create({
+     *   data: {
+     *     // ... data to create a WorkExperience
+     *   }
+     * })
+     * 
+     */
+    create<T extends WorkExperienceCreateArgs>(args: SelectSubset<T, WorkExperienceCreateArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WorkExperiences.
+     * @param {WorkExperienceCreateManyArgs} args - Arguments to create many WorkExperiences.
+     * @example
+     * // Create many WorkExperiences
+     * const workExperience = await prisma.workExperience.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WorkExperienceCreateManyArgs>(args?: SelectSubset<T, WorkExperienceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WorkExperiences and returns the data saved in the database.
+     * @param {WorkExperienceCreateManyAndReturnArgs} args - Arguments to create many WorkExperiences.
+     * @example
+     * // Create many WorkExperiences
+     * const workExperience = await prisma.workExperience.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WorkExperiences and only return the `wId`
+     * const workExperienceWithWIdOnly = await prisma.workExperience.createManyAndReturn({
+     *   select: { wId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WorkExperienceCreateManyAndReturnArgs>(args?: SelectSubset<T, WorkExperienceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a WorkExperience.
+     * @param {WorkExperienceDeleteArgs} args - Arguments to delete one WorkExperience.
+     * @example
+     * // Delete one WorkExperience
+     * const WorkExperience = await prisma.workExperience.delete({
+     *   where: {
+     *     // ... filter to delete one WorkExperience
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WorkExperienceDeleteArgs>(args: SelectSubset<T, WorkExperienceDeleteArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WorkExperience.
+     * @param {WorkExperienceUpdateArgs} args - Arguments to update one WorkExperience.
+     * @example
+     * // Update one WorkExperience
+     * const workExperience = await prisma.workExperience.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WorkExperienceUpdateArgs>(args: SelectSubset<T, WorkExperienceUpdateArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WorkExperiences.
+     * @param {WorkExperienceDeleteManyArgs} args - Arguments to filter WorkExperiences to delete.
+     * @example
+     * // Delete a few WorkExperiences
+     * const { count } = await prisma.workExperience.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WorkExperienceDeleteManyArgs>(args?: SelectSubset<T, WorkExperienceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkExperiences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WorkExperiences
+     * const workExperience = await prisma.workExperience.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WorkExperienceUpdateManyArgs>(args: SelectSubset<T, WorkExperienceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkExperiences and returns the data updated in the database.
+     * @param {WorkExperienceUpdateManyAndReturnArgs} args - Arguments to update many WorkExperiences.
+     * @example
+     * // Update many WorkExperiences
+     * const workExperience = await prisma.workExperience.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more WorkExperiences and only return the `wId`
+     * const workExperienceWithWIdOnly = await prisma.workExperience.updateManyAndReturn({
+     *   select: { wId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WorkExperienceUpdateManyAndReturnArgs>(args: SelectSubset<T, WorkExperienceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one WorkExperience.
+     * @param {WorkExperienceUpsertArgs} args - Arguments to update or create a WorkExperience.
+     * @example
+     * // Update or create a WorkExperience
+     * const workExperience = await prisma.workExperience.upsert({
+     *   create: {
+     *     // ... data to create a WorkExperience
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WorkExperience we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WorkExperienceUpsertArgs>(args: SelectSubset<T, WorkExperienceUpsertArgs<ExtArgs>>): Prisma__WorkExperienceClient<$Result.GetResult<Prisma.$WorkExperiencePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WorkExperiences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceCountArgs} args - Arguments to filter WorkExperiences to count.
+     * @example
+     * // Count the number of WorkExperiences
+     * const count = await prisma.workExperience.count({
+     *   where: {
+     *     // ... the filter for the WorkExperiences we want to count
+     *   }
+     * })
+    **/
+    count<T extends WorkExperienceCountArgs>(
+      args?: Subset<T, WorkExperienceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WorkExperienceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WorkExperience.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WorkExperienceAggregateArgs>(args: Subset<T, WorkExperienceAggregateArgs>): Prisma.PrismaPromise<GetWorkExperienceAggregateType<T>>
+
+    /**
+     * Group by WorkExperience.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkExperienceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WorkExperienceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WorkExperienceGroupByArgs['orderBy'] }
+        : { orderBy?: WorkExperienceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WorkExperienceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkExperienceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WorkExperience model
+   */
+  readonly fields: WorkExperienceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WorkExperience.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WorkExperienceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WorkExperience model
+   */
+  interface WorkExperienceFieldRefs {
+    readonly wId: FieldRef<"WorkExperience", 'String'>
+    readonly companyName: FieldRef<"WorkExperience", 'String'>
+    readonly companyWebsite: FieldRef<"WorkExperience", 'String'>
+    readonly startDate: FieldRef<"WorkExperience", 'DateTime'>
+    readonly endDate: FieldRef<"WorkExperience", 'DateTime'>
+    readonly onGoing: FieldRef<"WorkExperience", 'Boolean'>
+    readonly responsibilities: FieldRef<"WorkExperience", 'String[]'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WorkExperience findUnique
+   */
+  export type WorkExperienceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter, which WorkExperience to fetch.
+     */
+    where: WorkExperienceWhereUniqueInput
+  }
+
+  /**
+   * WorkExperience findUniqueOrThrow
+   */
+  export type WorkExperienceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter, which WorkExperience to fetch.
+     */
+    where: WorkExperienceWhereUniqueInput
+  }
+
+  /**
+   * WorkExperience findFirst
+   */
+  export type WorkExperienceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter, which WorkExperience to fetch.
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkExperiences to fetch.
+     */
+    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkExperiences.
+     */
+    cursor?: WorkExperienceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkExperiences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkExperiences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkExperiences.
+     */
+    distinct?: WorkExperienceScalarFieldEnum | WorkExperienceScalarFieldEnum[]
+  }
+
+  /**
+   * WorkExperience findFirstOrThrow
+   */
+  export type WorkExperienceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter, which WorkExperience to fetch.
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkExperiences to fetch.
+     */
+    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkExperiences.
+     */
+    cursor?: WorkExperienceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkExperiences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkExperiences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkExperiences.
+     */
+    distinct?: WorkExperienceScalarFieldEnum | WorkExperienceScalarFieldEnum[]
+  }
+
+  /**
+   * WorkExperience findMany
+   */
+  export type WorkExperienceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter, which WorkExperiences to fetch.
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkExperiences to fetch.
+     */
+    orderBy?: WorkExperienceOrderByWithRelationInput | WorkExperienceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WorkExperiences.
+     */
+    cursor?: WorkExperienceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkExperiences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkExperiences.
+     */
+    skip?: number
+    distinct?: WorkExperienceScalarFieldEnum | WorkExperienceScalarFieldEnum[]
+  }
+
+  /**
+   * WorkExperience create
+   */
+  export type WorkExperienceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * The data needed to create a WorkExperience.
+     */
+    data: XOR<WorkExperienceCreateInput, WorkExperienceUncheckedCreateInput>
+  }
+
+  /**
+   * WorkExperience createMany
+   */
+  export type WorkExperienceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WorkExperiences.
+     */
+    data: WorkExperienceCreateManyInput | WorkExperienceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WorkExperience createManyAndReturn
+   */
+  export type WorkExperienceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * The data used to create many WorkExperiences.
+     */
+    data: WorkExperienceCreateManyInput | WorkExperienceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WorkExperience update
+   */
+  export type WorkExperienceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * The data needed to update a WorkExperience.
+     */
+    data: XOR<WorkExperienceUpdateInput, WorkExperienceUncheckedUpdateInput>
+    /**
+     * Choose, which WorkExperience to update.
+     */
+    where: WorkExperienceWhereUniqueInput
+  }
+
+  /**
+   * WorkExperience updateMany
+   */
+  export type WorkExperienceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WorkExperiences.
+     */
+    data: XOR<WorkExperienceUpdateManyMutationInput, WorkExperienceUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkExperiences to update
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * Limit how many WorkExperiences to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkExperience updateManyAndReturn
+   */
+  export type WorkExperienceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * The data used to update WorkExperiences.
+     */
+    data: XOR<WorkExperienceUpdateManyMutationInput, WorkExperienceUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkExperiences to update
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * Limit how many WorkExperiences to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkExperience upsert
+   */
+  export type WorkExperienceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * The filter to search for the WorkExperience to update in case it exists.
+     */
+    where: WorkExperienceWhereUniqueInput
+    /**
+     * In case the WorkExperience found by the `where` argument doesn't exist, create a new WorkExperience with this data.
+     */
+    create: XOR<WorkExperienceCreateInput, WorkExperienceUncheckedCreateInput>
+    /**
+     * In case the WorkExperience was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WorkExperienceUpdateInput, WorkExperienceUncheckedUpdateInput>
+  }
+
+  /**
+   * WorkExperience delete
+   */
+  export type WorkExperienceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+    /**
+     * Filter which WorkExperience to delete.
+     */
+    where: WorkExperienceWhereUniqueInput
+  }
+
+  /**
+   * WorkExperience deleteMany
+   */
+  export type WorkExperienceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkExperiences to delete
+     */
+    where?: WorkExperienceWhereInput
+    /**
+     * Limit how many WorkExperiences to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkExperience without action
+   */
+  export type WorkExperienceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkExperience
+     */
+    select?: WorkExperienceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkExperience
+     */
+    omit?: WorkExperienceOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11958,6 +13066,19 @@ export namespace Prisma {
   };
 
   export type SkillScalarFieldEnum = (typeof SkillScalarFieldEnum)[keyof typeof SkillScalarFieldEnum]
+
+
+  export const WorkExperienceScalarFieldEnum: {
+    wId: 'wId',
+    companyName: 'companyName',
+    companyWebsite: 'companyWebsite',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    onGoing: 'onGoing',
+    responsibilities: 'responsibilities'
+  };
+
+  export type WorkExperienceScalarFieldEnum = (typeof WorkExperienceScalarFieldEnum)[keyof typeof WorkExperienceScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12776,6 +13897,68 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Skill"> | Date | string
   }
 
+  export type WorkExperienceWhereInput = {
+    AND?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
+    OR?: WorkExperienceWhereInput[]
+    NOT?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
+    wId?: StringFilter<"WorkExperience"> | string
+    companyName?: StringFilter<"WorkExperience"> | string
+    companyWebsite?: StringFilter<"WorkExperience"> | string
+    startDate?: DateTimeFilter<"WorkExperience"> | Date | string
+    endDate?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
+    onGoing?: BoolFilter<"WorkExperience"> | boolean
+    responsibilities?: StringNullableListFilter<"WorkExperience">
+  }
+
+  export type WorkExperienceOrderByWithRelationInput = {
+    wId?: SortOrder
+    companyName?: SortOrder
+    companyWebsite?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    onGoing?: SortOrder
+    responsibilities?: SortOrder
+  }
+
+  export type WorkExperienceWhereUniqueInput = Prisma.AtLeast<{
+    wId?: string
+    AND?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
+    OR?: WorkExperienceWhereInput[]
+    NOT?: WorkExperienceWhereInput | WorkExperienceWhereInput[]
+    companyName?: StringFilter<"WorkExperience"> | string
+    companyWebsite?: StringFilter<"WorkExperience"> | string
+    startDate?: DateTimeFilter<"WorkExperience"> | Date | string
+    endDate?: DateTimeNullableFilter<"WorkExperience"> | Date | string | null
+    onGoing?: BoolFilter<"WorkExperience"> | boolean
+    responsibilities?: StringNullableListFilter<"WorkExperience">
+  }, "wId">
+
+  export type WorkExperienceOrderByWithAggregationInput = {
+    wId?: SortOrder
+    companyName?: SortOrder
+    companyWebsite?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    onGoing?: SortOrder
+    responsibilities?: SortOrder
+    _count?: WorkExperienceCountOrderByAggregateInput
+    _max?: WorkExperienceMaxOrderByAggregateInput
+    _min?: WorkExperienceMinOrderByAggregateInput
+  }
+
+  export type WorkExperienceScalarWhereWithAggregatesInput = {
+    AND?: WorkExperienceScalarWhereWithAggregatesInput | WorkExperienceScalarWhereWithAggregatesInput[]
+    OR?: WorkExperienceScalarWhereWithAggregatesInput[]
+    NOT?: WorkExperienceScalarWhereWithAggregatesInput | WorkExperienceScalarWhereWithAggregatesInput[]
+    wId?: StringWithAggregatesFilter<"WorkExperience"> | string
+    companyName?: StringWithAggregatesFilter<"WorkExperience"> | string
+    companyWebsite?: StringWithAggregatesFilter<"WorkExperience"> | string
+    startDate?: DateTimeWithAggregatesFilter<"WorkExperience"> | Date | string
+    endDate?: DateTimeNullableWithAggregatesFilter<"WorkExperience"> | Date | string | null
+    onGoing?: BoolWithAggregatesFilter<"WorkExperience"> | boolean
+    responsibilities?: StringNullableListFilter<"WorkExperience">
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -13533,6 +14716,76 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WorkExperienceCreateInput = {
+    wId?: string
+    companyName: string
+    companyWebsite: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    onGoing?: boolean
+    responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceUncheckedCreateInput = {
+    wId?: string
+    companyName: string
+    companyWebsite: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    onGoing?: boolean
+    responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceUpdateInput = {
+    wId?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyWebsite?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onGoing?: BoolFieldUpdateOperationsInput | boolean
+    responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceUncheckedUpdateInput = {
+    wId?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyWebsite?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onGoing?: BoolFieldUpdateOperationsInput | boolean
+    responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceCreateManyInput = {
+    wId?: string
+    companyName: string
+    companyWebsite: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    onGoing?: boolean
+    responsibilities?: WorkExperienceCreateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceUpdateManyMutationInput = {
+    wId?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyWebsite?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onGoing?: BoolFieldUpdateOperationsInput | boolean
+    responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+  }
+
+  export type WorkExperienceUncheckedUpdateManyInput = {
+    wId?: StringFieldUpdateOperationsInput | string
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyWebsite?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    onGoing?: BoolFieldUpdateOperationsInput | boolean
+    responsibilities?: WorkExperienceUpdateresponsibilitiesInput | string[]
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14197,6 +15450,34 @@ export namespace Prisma {
     _max?: NestedEnumSkillTypeFilter<$PrismaModel>
   }
 
+  export type WorkExperienceCountOrderByAggregateInput = {
+    wId?: SortOrder
+    companyName?: SortOrder
+    companyWebsite?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    onGoing?: SortOrder
+    responsibilities?: SortOrder
+  }
+
+  export type WorkExperienceMaxOrderByAggregateInput = {
+    wId?: SortOrder
+    companyName?: SortOrder
+    companyWebsite?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    onGoing?: SortOrder
+  }
+
+  export type WorkExperienceMinOrderByAggregateInput = {
+    wId?: SortOrder
+    companyName?: SortOrder
+    companyWebsite?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    onGoing?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -14570,6 +15851,15 @@ export namespace Prisma {
     delete?: SkillCategoryWhereInput | boolean
     connect?: SkillCategoryWhereUniqueInput
     update?: XOR<XOR<SkillCategoryUpdateToOneWithWhereWithoutSkillsInput, SkillCategoryUpdateWithoutSkillsInput>, SkillCategoryUncheckedUpdateWithoutSkillsInput>
+  }
+
+  export type WorkExperienceCreateresponsibilitiesInput = {
+    set: string[]
+  }
+
+  export type WorkExperienceUpdateresponsibilitiesInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {

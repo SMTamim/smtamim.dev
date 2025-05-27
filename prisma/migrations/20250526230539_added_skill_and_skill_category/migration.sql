@@ -1,5 +1,0 @@
--- CreateEnum
-CREATE TYPE "SkillType" AS ENUM ('TECHNICAL_SKILL', 'SOFT_SKILL');
-
--- AlterTable
-ALTER TABLE "skill" ADD COLUMN     "type" "SkillType" NOT NULL DEFAULT 'TECHNICAL_SKILL';
